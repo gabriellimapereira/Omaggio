@@ -38,9 +38,9 @@ typedef struct User {
     struct User* next;
     struct User* prev;
     struct TaskList* taskList;
-    struct CompletedTasks* completedList;
+    struct CompletedTasks* completedTasks;
     struct DoublyTaskList* doublyTaskList;
-    struct PendingStask* pendingList;
+    struct PendingTasks* pendingTasks;
     struct UndoStack* history;
 } User;
 

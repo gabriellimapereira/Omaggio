@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "functions.h"
 
+//funções de usuários
 User* allocateUser(int newId) { //aloca a memória para o usuário
     User* newUser = (User*) malloc (sizeof(User));
     if (newUser == NULL) {
@@ -39,7 +40,8 @@ User* findEnd(User* userList) { //acha o final da lista
     return aux;
 }
 
-User* insertUser(User* userList, int newId) { //insere usuário
+User* insertUser(User* userList, int newId) 
+{ //insere usuário
     User* newUser = allocateUser(newId);
     
     if (userList == NULL) {
@@ -101,3 +103,5 @@ void printUserList(User* userList) {
         aux = aux->next;
     }
 }
+
+//funções das listas de tarefas
