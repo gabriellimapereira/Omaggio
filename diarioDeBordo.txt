@@ -1,0 +1,20 @@
+17/12/2024
+omaggio significa algo como "tributo" ou "presente" em italiano.
+quando eu estava pensando em um nome para o gerenciador, estava
+escutando Velha Infância dos Tribalistas, daí puxei o nome. decidi
+que seria italiano pois é uma língua com certa importância pessoal.
+
+18/12/2024
+tudo parece muito claro ao mesmo tempo que é muito embaçado.
+as funções de usuário estão operantes e testadas (pelo menos no bá-
+sico que elas se propõem a fazer). ainda não implementei funções re-
+lacionadas ao nome por conta que trabalhar com strings é complicado.
+
+tem erro pra peste, tu é doido.
+
+percebi que será melhor modularizar ao máximo o código, apesar de fi-
+car extenso. por exemplo: a função inserir() irá ser segregada três: 
+alocar(), preencher() e inserir() facilitando assim a organização ao 
+criar um novo nó.
+
+os erros aparecem e somem repentinamente. isso é normal?

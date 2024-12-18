@@ -3,15 +3,18 @@
 #include "functions.h"
 
 //funções de usuários
-User* allocateUser(int newId) { //aloca a memória para o usuário
+User* allocateUser() { //aloca a memória para o usuário
     User* newUser = (User*) malloc (sizeof(User));
     if (newUser == NULL) {
         printf("erro ao alocar memória para usuário!\n");
         exit(1);
     } else {
-        newUser->id = newId;
         return newUser;
     }
+}
+
+User* bootUserList() { //inicializa a lista
+    return NULL;
 }
 
 User* findUser(User* userList, int Id) { //caça o usuário na lista
@@ -40,9 +43,8 @@ User* findEnd(User* userList) { //acha o final da lista
     return aux;
 }
 
-User* insertUser(User* userList, int newId) 
-{ //insere usuário
-    User* newUser = allocateUser(newId);
+User* insertUser(User* userList) { //insere usuário
+    User* newUser = allocateUser();
     
     if (userList == NULL) {
         newUser->next = NULL;
@@ -91,7 +93,7 @@ User* deleteUser(User* userList, int Id) { //deleta o usuário
     return userList;
 }
 
-void printUserList(User* userList) {
+void printUserList(User* userList) { //exibe a lista
     if (userList == NULL) {
         printf("sem usuários cadastrados!\n");
         return;
@@ -104,4 +106,94 @@ void printUserList(User* userList) {
     }
 }
 
+//funções de tarefas
+
+Task* allocateTask() { //aloca a tarefa
+    Task* newTask = (Task*) malloc (sizeof(Task));
+    if (newTask == NULL) {
+        printf("erro ao alocar memória!\n");
+        exit(1);
+    } else {
+        return newTask;
+    }
+}
+
 //funções das listas de tarefas
+
+TaskList* bootTaskList() { //inicializa a lista de tarefas
+    return NULL;
+}
+
+TaskList* allocateListNode() {
+    TaskList* newNode = (TaskList*) malloc (sizeof(TaskList));
+    if (newNode == NULL) {
+        printf("erro ao alocar memória!\n");
+        exit(1);
+    } else {
+        return newNode;
+    }
+}
+
+TaskList* findTask(TaskList* taskList, int taskId) { //achar tarefa
+    if (taskList == NULL) {
+        printf("sem tarefas no sistema!\n");
+        return NULL;
+    }
+
+    TaskList* aux = taskList;
+    while (aux != NULL) {
+        if (aux->task->id == taskId) {
+            return aux;
+        }
+        aux = aux->next;
+    }
+
+    printf("tarefa não encontrada!\n");
+    return NULL;
+}
+
+TaskList* findEndList(TaskList* taskList) { //encontra final da lista
+    if (taskList == NULL || taskList->next == NULL) return taskList;
+
+    TaskList* aux = taskList;
+    while (aux->next != NULL) aux = aux->next;
+    return aux;
+}
+
+TaskList* insertTask(TaskList* taskList) { //inserir tarefa
+    Task* newTask = allocateTask();
+    TaskList* newNode = allocateNode();
+    newNode->task = newTask;
+    
+    if (taskList == NULL) {
+        newNode->next = NULL;
+        taskList = newTask;
+    } else if (taskList->next == NULL) {
+        taskList->next = newTask;
+        newNode->next = NULL;
+    } else {
+        TaskList* aux = findEndList(taskList);
+        aux->next = newTask;
+        newNode->next = NULL;
+    }
+
+    return taskList;
+}
+
+#include <stdio.h>
+
+void printTasks(TaskList* taskList) {
+    if (taskList == NULL) {
+        printf("não há tarefas na lista\n");
+        return;
+    }
+
+    TaskList* aux = taskList;
+    printf("IDs das tarefas:\n");
+    while (aux != NULL) {
+        if (aux->task != NULL) { 
+            printf("ID: %d\n", aux->task->id);
+        }
+        aux = aux->next;
+    }
+}

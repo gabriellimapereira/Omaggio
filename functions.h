@@ -2,6 +2,7 @@
 #define FUNCTIONS
 
 typedef struct Task {
+    int id;
     char name[50];
     char deadline[10];
     int priority;
@@ -44,11 +45,24 @@ typedef struct User {
     struct UndoStack* history;
 } User;
 
+//funções de usuário
 User* allocateUser(int newId);
+User* bootUserList();
 User* findUser(User* userList, int Id);
 User* findEnd(User* userList);
 User* insertUser(User* userList, int newId);
 User* deleteUser(User* userList, int Id);
 void printUserList(User* userList);
+
+//funções de tarefas
+Task* allocateTask();
+
+//funções de lista de listas encadeadas
+TaskList* bootTaskList();
+TaskList* allocateListNode();
+TaskList* findTask(TaskList* TaskList, int taskId);
+TaskList* findEndList(TaskList* userList);
+TaskList* insertTask(TaskList* userList, int newId);
+void printTasks(TaskList* taskList);
 
 #endif
