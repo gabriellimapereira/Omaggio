@@ -23,3 +23,7 @@ os erros aparecem e somem repentinamente. isso é normal?
 19/12/2024 ----------------------------------------------------------
 uma vez melhor organizadas as funções já feitas, me resta implementar
 um método de preencher as estruturas - ou o seus campos. é mole, né?
+
+criei a de preenchimento de usuário. também fiz os métodos de inici-
+alização. deveria ter feito a de preencher tarefa, mas devo possuir
+algum resquício de sangue baiano correndo em minhas veias.
