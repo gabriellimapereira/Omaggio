@@ -46,6 +46,10 @@ typedef struct User {
 } User;
 
 //funções de usuário
+int generateRandId();
+void clearBuffer();
+int generateRandNum();
+User* setterUser(User* newUser);
 User* createUser();
 User* initializeUserList();
 User* getUserById(User* userList, int id);
@@ -65,5 +69,13 @@ TaskList* getLastTaskNode(TaskList* taskList);
 TaskList* addTaskToList(TaskList* taskList);
 void displayTaskList(TaskList* taskList);
 
+//funções da lista de tarefas duplamente encadeada
+DoublyTaskList* initializeDoublyTaskList();
+
+//funções da lista de pendentes
+PendingTasks* initializePendingTasks();
+
+//funções da pilha de reversão
+UndoStack* initializeUndoStack();
 
 #endif

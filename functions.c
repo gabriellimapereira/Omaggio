@@ -1,8 +1,40 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <time.h>
 #include "functions.h"
 
 // funções de usuário
+int generateRandId() { //gera um id randomizado
+    srand(time(NULL));
+    int id = rand();
+    return id;
+}
+
+void clearBuffer() { //limpa o buffer de entrada
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
+User* setterUser(User* newUser) { //captura os dados de usuário
+    printf("digite o nome do novo usuário: ");
+    fgets(newUser->name, sizeof(newUser->name), stdin);
+
+    newUser->name[strcspn(newUser->name, "\n")] = '\0';   
+    clearBuffer();
+
+    newUser->id = generateRandId();
+    printf("seu id é: %d", newUser->id);
+
+    newUser->taskList = initializeTaskList();
+    newUser->completedTasks = createCompletedTasks();
+    newUser->doublyTaskList = createDoublyTaskList();
+    newUser->pendingTasks = createPendingTasks();
+    newUser->history = createUndoStack();
+
+    return newUser;
+}
+
 User* createUser() { // aloca a memória para o usuário
     User* newUser = (User*) malloc(sizeof(User));
     if (newUser == NULL) {
@@ -45,6 +77,7 @@ User* getLastUser(User* userList) { // acha o final da lista
 
 User* addUser(User* userList) { // insere usuário
     User* newUser = createUser();
+    newUser = setterUser(newUser);
 
     if (userList == NULL) {
         newUser->next = NULL;
@@ -107,6 +140,7 @@ void displayUserList(User* userList) { // exibe a lista
 }
 
 // funções de tarefas
+
 Task* createTask() { // aloca a tarefa
     Task* newTask = (Task*) malloc(sizeof(Task));
     if (newTask == NULL) {
@@ -192,4 +226,19 @@ void displayTaskList(TaskList* taskList) { // exibe a lista de tarefas
         }
         aux = aux->next;
     }
+}
+
+//funções da lista de tarefas duplamente encadeada
+DoublyTaskList* initializeDoublyTaskList() { // inicializa a lista dupla de tarefas
+    return NULL;
+}
+
+//funções da lista de pendentes
+PendingTasks* initializePendingTasks() { // inicializa a lista de pendentes
+    return NULL;
+}
+
+//funções da pilha de reversão
+UndoStack* initializeUndoStack() { // inicializa a pilha de reversão
+    return NULL;
 }
