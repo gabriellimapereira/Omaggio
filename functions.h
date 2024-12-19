@@ -46,11 +46,11 @@ typedef struct User {
 } User;
 
 //funções de usuário
-User* allocateUser(int newId);
+User* allocateUser();
 User* bootUserList();
 User* findUser(User* userList, int Id);
 User* findEnd(User* userList);
-User* insertUser(User* userList, int newId);
+User* insertUser(User* userList);
 User* deleteUser(User* userList, int Id);
 void printUserList(User* userList);
 
