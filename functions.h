@@ -46,23 +46,24 @@ typedef struct User {
 } User;
 
 //funções de usuário
-User* allocateUser();
-User* bootUserList();
-User* findUser(User* userList, int Id);
-User* findEnd(User* userList);
-User* insertUser(User* userList);
-User* deleteUser(User* userList, int Id);
-void printUserList(User* userList);
+User* createUser();
+User* initializeUserList();
+User* getUserById(User* userList, int id);
+User* getLastUser(User* userList);
+User* addUser(User* userList);
+User* removeUserById(User* userList, int id);
+void displayUserList(User* userList);
 
-//funções de tarefas
-Task* allocateTask();
+// funções de tarefas
+Task* createTask();
 
-//funções de lista de listas encadeadas
-TaskList* bootTaskList();
-TaskList* allocateListNode();
-TaskList* findTask(TaskList* TaskList, int taskId);
-TaskList* findEndList(TaskList* userList);
-TaskList* insertTask(TaskList* userList, int newId);
-void printTasks(TaskList* taskList);
+// funções de lista encadeada
+TaskList* initializeTaskList();
+TaskList* createTaskNode();
+TaskList* getTaskById(TaskList* taskList, int key);
+TaskList* getLastTaskNode(TaskList* taskList);
+TaskList* addTaskToList(TaskList* taskList);
+void displayTaskList(TaskList* taskList);
+
 
 #endif

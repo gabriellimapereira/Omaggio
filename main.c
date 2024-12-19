@@ -3,6 +3,6 @@
 #include <functions.h>
 
 int main() {
-	printf("ainda haverá um trabalho aqui :)\n");
+	printf("registros foram feitos no diário de bordo\n");
 	return 0;
 }

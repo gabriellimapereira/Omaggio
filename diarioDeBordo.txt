@@ -18,3 +18,7 @@ alocar(), preencher() e inserir() facilitando assim a organização ao
 criar um novo nó.
 
 os erros aparecem e somem repentinamente. isso é normal?
+
+19/12/2024
+uma vez melhor organizadas as funções já feitas, me resta implementar
+um método de preencher as estruturas - ou o seus campos. é mole, né?
