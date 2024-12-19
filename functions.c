@@ -180,8 +180,6 @@ TaskList* insertTask(TaskList* taskList) { //inserir tarefa
     return taskList;
 }
 
-#include <stdio.h>
-
 void printTasks(TaskList* taskList) {
     if (taskList == NULL) {
         printf("não há tarefas na lista\n");
