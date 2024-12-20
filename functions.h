@@ -46,9 +46,9 @@ typedef struct User {
 } User;
 
 //funções de usuário
-int generateRandId();
+int generateRandId(User* userList);
 void clearBuffer();
-int generateRandNum();
+int generateRandNum(User* userList);
 User* setterUser(User* newUser);
 User* createUser();
 User* initializeUserList();

@@ -5,6 +5,8 @@
 #include <functions.h>
 
 int main() {
+	srand(time(NULL));
+	
 	printf("registros foram feitos no diário de bordo\n");
 	return 0;
 }

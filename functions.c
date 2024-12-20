@@ -5,10 +5,19 @@
 #include "functions.h"
 
 // funções de usuário
-int generateRandId() { //gera um id randomizado
-    srand(time(NULL));
-    int id = rand();
-    return id;
+int checkId(User* userList, int id) { //verifica se o id já está sendo usado por algum usuário
+    while (userList != NULL) {
+        if (id == userList->id) return 0;
+        userList = userList->next;
+    }
+    return 1;
+}
+
+int generateRandId(User* userList) { //gera um id randomizado
+    while (1) {
+        int id = rand();
+        if (checkId(userList, id)) return id;
+    }
 }
 
 void clearBuffer() { //limpa o buffer de entrada
@@ -16,14 +25,14 @@ void clearBuffer() { //limpa o buffer de entrada
     while ((c = getchar()) != '\n' && c != EOF);
 }
 
-User* setterUser(User* newUser) { //captura os dados de usuário
+User* setterUser(User* newUser, User* userList) { //captura os dados de usuário
     printf("digite o nome do novo usuário: ");
     fgets(newUser->name, sizeof(newUser->name), stdin);
 
     newUser->name[strcspn(newUser->name, "\n")] = '\0';   
     clearBuffer();
 
-    newUser->id = generateRandId();
+    newUser->id = generateRandId(userList);
     printf("seu id é: %d", newUser->id);
 
     newUser->taskList = initializeTaskList();
@@ -77,7 +86,7 @@ User* getLastUser(User* userList) { // acha o final da lista
 
 User* addUser(User* userList) { // insere usuário
     User* newUser = createUser();
-    newUser = setterUser(newUser);
+    newUser = setterUser(newUser, userList);
 
     if (userList == NULL) {
         newUser->next = NULL;
