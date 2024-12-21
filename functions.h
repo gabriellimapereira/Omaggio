@@ -46,11 +46,11 @@ typedef struct User {
 } User;
 
 //funções de usuário
-int generateRandId(User* userList);
+int checkUserId(User* userList, int id);
+int generateRandUserId(User* userList);
 void clearBuffer();
-int generateRandNum(User* userList);
-User* setterUser(User* newUser);
-User* createUser();
+User* setterUser(User* newUser, User* userList);
+User* allocateUser();
 User* initializeUserList();
 User* getUserById(User* userList, int id);
 User* getLastUser(User* userList);
@@ -59,11 +59,11 @@ User* removeUserById(User* userList, int id);
 void displayUserList(User* userList);
 
 // funções de tarefas
-Task* createTask();
+Task* allocateTask();
 
 // funções de lista encadeada
 TaskList* initializeTaskList();
-TaskList* createTaskNode();
+TaskList* allocateTaskNode();
 TaskList* getTaskById(TaskList* taskList, int key);
 TaskList* getLastTaskNode(TaskList* taskList);
 TaskList* addTaskToList(TaskList* taskList);

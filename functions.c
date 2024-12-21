@@ -5,7 +5,7 @@
 #include "functions.h"
 
 // funções de usuário
-int checkId(User* userList, int id) { //verifica se o id já está sendo usado por algum usuário
+int checkUserId(User* userList, int id) { //verifica se o id já está sendo usado por algum usuário
     while (userList != NULL) {
         if (id == userList->id) return 0;
         userList = userList->next;
@@ -13,10 +13,10 @@ int checkId(User* userList, int id) { //verifica se o id já está sendo usado p
     return 1;
 }
 
-int generateRandId(User* userList) { //gera um id randomizado
+int generateRandUserId(User* userList) { //gera um id randomizado
     while (1) {
         int id = rand();
-        if (checkId(userList, id)) return id;
+        if (checkUserId(userList, id)) return id;
     }
 }
 
@@ -32,7 +32,7 @@ User* setterUser(User* newUser, User* userList) { //captura os dados de usuário
     newUser->name[strcspn(newUser->name, "\n")] = '\0';   
     clearBuffer();
 
-    newUser->id = generateRandId(userList);
+    newUser->id = generateRandUserId(userList);
     printf("seu id é: %d", newUser->id);
 
     newUser->taskList = initializeTaskList();
@@ -44,7 +44,7 @@ User* setterUser(User* newUser, User* userList) { //captura os dados de usuário
     return newUser;
 }
 
-User* createUser() { // aloca a memória para o usuário
+User* allocateUser() { // aloca a memória para o usuário
     User* newUser = (User*) malloc(sizeof(User));
     if (newUser == NULL) {
         printf("erro ao alocar memória para usuário!\n");
@@ -85,7 +85,7 @@ User* getLastUser(User* userList) { // acha o final da lista
 }
 
 User* addUser(User* userList) { // insere usuário
-    User* newUser = createUser();
+    User* newUser = aloccateUser();
     newUser = setterUser(newUser, userList);
 
     if (userList == NULL) {
@@ -150,7 +150,7 @@ void displayUserList(User* userList) { // exibe a lista
 
 // funções de tarefas
 
-Task* createTask() { // aloca a tarefa
+Task* allocateTask() { // aloca a tarefa
     Task* newTask = (Task*) malloc(sizeof(Task));
     if (newTask == NULL) {
         printf("erro ao alocar memória!\n");
@@ -165,7 +165,7 @@ TaskList* initializeTaskList() { // inicializa a lista de tarefas
     return NULL;
 }
 
-TaskList* createTaskNode() { // cria um nó de lista de tarefas
+TaskList* allocateTaskNode() { // cria um nó de lista de tarefas
     TaskList* newNode = (TaskList*) malloc(sizeof(TaskList));
     if (newNode == NULL) {
         printf("erro ao alocar memória!\n");
@@ -202,8 +202,8 @@ TaskList* getLastTaskNode(TaskList* taskList) { // encontra o final da lista
 }
 
 TaskList* addTaskToList(TaskList* taskList) { // insere a tarefa na lista
-    Task* newTask = createTask();
-    TaskList* newNode = createTaskNode();
+    Task* newTask = allocateTask();
+    TaskList* newNode = allocateTaskNode();
     newNode->task = newTask;
 
     if (taskList == NULL) {
