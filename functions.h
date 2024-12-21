@@ -6,6 +6,7 @@ typedef struct Task {
     char name[50];
     char deadline[10];
     int priority;
+    int status; //if 0, pendente; if 1, concluída
 } Task;
 
 typedef struct TaskList { //lista encadeada
@@ -60,6 +61,7 @@ void displayUserList(User* userList);
 
 // funções de tarefas
 Task* allocateTask();
+Task* setterTask(Task* newTask);
 
 // funções de lista encadeada
 TaskList* initializeTaskList();

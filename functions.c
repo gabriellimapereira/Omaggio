@@ -15,7 +15,7 @@ int checkUserId(User* userList, int id) { //verifica se o id já está sendo usa
 
 int generateRandUserId(User* userList) { //gera um id randomizado
     while (1) {
-        int id = rand();
+        int id = rand() % 10001;
         if (checkUserId(userList, id)) return id;
     }
 }
@@ -34,6 +34,7 @@ User* setterUser(User* newUser, User* userList) { //captura os dados de usuário
 
     newUser->id = generateRandUserId(userList);
     printf("seu id é: %d", newUser->id);
+    clearBuffer();
 
     newUser->taskList = initializeTaskList();
     newUser->completedTasks = createCompletedTasks();
@@ -158,6 +159,53 @@ Task* allocateTask() { // aloca a tarefa
     } else {
         return newTask;
     }
+}
+
+int checkTaskId(TaskList* taskList, int id) { //verifica se o id já está sendo usado por alguma tarefa
+    while (taskList != NULL) {
+        if (id == taskList->task->id) return 0;
+        taskList = taskList->next;
+    }
+    return 1;
+}
+
+int generateRandUserId(TaskList* taskList) { //gera um id de tarefa randomizado
+    while (1) {
+        int id = rand() % 10001;
+        if (checkUserId(taskList, id)) return id;
+    }
+}
+
+Task* setterTask(Task* newTask, TaskList* taskList) { //setter de tarefa
+    printf("digite o nome da tarefa:\n");
+    fgets(newTask->name, sizeof(newTask->name), stdin);
+    newTask->name[strcspn(newTask->name, "\n")] = '\0';
+    clearBuffer();
+
+    printf("digite o prazo (dd/mm/aaaa):\n");
+    fgets(newTask->deadline, sizeof(newTask->deadline), stdin);
+    newTask->deadline[strcspn(newTask->deadline, "\n")] = '\0';
+    clearBuffer();
+
+    while (1) {
+        printf("digite a prioridade da tarefa (1 a 5):\n");
+        scanf("%d", &newTask->priority);
+        if (newTask->priority >= 1 && newTask->priority <= 5) break;
+        printf("prioridade inválida! digite um valor entre 1 e 5\n");
+    }
+    clearBuffer();
+
+    while (1) {
+        printf("digite o status da tarefa (0 para pendente, 1 para concluída):\n");
+        scanf("%d", &newTask->status);
+        if (newTask->status == 0 || newTask->status == 1) break;
+        printf("status inválido! digite 0 ou 1\n");
+    }
+    clearBuffer();
+
+    newTask->id = generateRandUserId(taskList);
+
+    return newTask;
 }
 
 // funções das listas de tarefas

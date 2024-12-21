@@ -35,3 +35,7 @@ chame mais de uma vez, o que poderia ser problemático.
 
 pretendo separar a functions.h em outros cabeçalhos para organizá-la 
 melhor.
+
+21/12/2024 ----------------------------------------------------------
+não dividi, sou baiano. só fiz o setter de tarefa, umas das tarefas
+mais árduas da minha vida.
