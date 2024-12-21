@@ -169,7 +169,7 @@ int checkTaskId(TaskList* taskList, int id) { //verifica se o id já está sendo
     return 1;
 }
 
-int generateRandUserId(TaskList* taskList) { //gera um id de tarefa randomizado
+int generateRandTaskId(TaskList* taskList) { //gera um id de tarefa randomizado
     while (1) {
         int id = rand() % 10001;
         if (checkUserId(taskList, id)) return id;
@@ -203,7 +203,7 @@ Task* setterTask(Task* newTask, TaskList* taskList) { //setter de tarefa
     }
     clearBuffer();
 
-    newTask->id = generateRandUserId(taskList);
+    newTask->id = generateRandTaskId(taskList);
 
     return newTask;
 }

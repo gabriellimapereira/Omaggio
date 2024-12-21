@@ -61,7 +61,9 @@ void displayUserList(User* userList);
 
 // funções de tarefas
 Task* allocateTask();
-Task* setterTask(Task* newTask);
+int checkTaskId(TaskList* taskList, int id);
+int generateRandTaskId(TaskList* taskList);
+Task* setterTask(Task* newTask, TaskList* taskList);
 
 // funções de lista encadeada
 TaskList* initializeTaskList();
