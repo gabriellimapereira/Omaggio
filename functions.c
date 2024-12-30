@@ -324,6 +324,7 @@ TaskList* removeTaskFromList(TaskList* taskList, int key) {
 
 void displayTaskListRecursive(TaskList* taskList) { // exibe a lista de forma recursiva
     if (taskList == NULL) {
+        printf("lista vazia!\n");
         return;
     }
 
