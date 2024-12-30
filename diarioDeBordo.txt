@@ -39,3 +39,14 @@ melhor.
 21/12/2024 ----------------------------------------------------------
 não dividi, sou baiano. só fiz o setter de tarefa, umas das tarefas
 mais árduas da minha vida.
+
+24/12/2024 ----------------------------------------------------------
+fiz algumas alterações que resolvi deletar. tentei separar as funções
+em cabeçalhos diferentes, mas vi que ficaria masi bagunçado. ficariam
+muitos arquivos, então voltei ao estado onde me encontro atualmente.
+sinto que joguei umas duas horas no lixo.
+
+29/12/2024 ----------------------------------------------------------
+oi, eu sumi por uns dias. esse trabalho tá dando erro pra peste. ten-
+tei um script de teste e tive que corrigir muita, muita coisa. agora
+me resta tentar recuperar o tempo "perdido". bora trabalhar.

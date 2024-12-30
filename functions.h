@@ -5,32 +5,34 @@ typedef struct Task {
     int id;
     char name[50];
     char deadline[10];
+    char description[500];
     int priority;
-    int status; //if 0, pendente; if 1, concluída
+    int status;
 } Task;
 
-typedef struct TaskList { //lista encadeada
-    struct Task* task;
-    struct Task* next;
+typedef struct TaskList {
+    Task* task;
+    struct TaskList* next;
 } TaskList;
 
-typedef struct CompletedTasks { //lista encadeada-circular
-    struct Task* task;
-    struct Task* next;
+typedef struct CompletedTasks {
+    Task* task;
+    struct CompletedTasks* next;
+    int quant;
 } CompletedTasks;
 
-typedef struct DoublyTaskList { //lista duplamente-encadeada
-    struct Task* task;
-    struct Task* next;
-    struct Task* prev;
+typedef struct DoublyTaskList {
+    Task* task;
+    struct DoublyTaskList* next;
+    struct DoublyTaskList* prev;
 } DoublyTaskList;
 
-typedef struct PendingTasks { //tarefas pendentes
-    struct Task* first;
-    struct Task* last;
+typedef struct PendingTasks {
+    TaskList* first;
+    TaskList* last;
 } PendingTasks;
 
-typedef struct UndoStack { //pilha para reverter ações
+typedef struct UndoStack {
     struct User* top;
 } UndoStack;
 
@@ -39,17 +41,19 @@ typedef struct User {
     int id;
     struct User* next;
     struct User* prev;
-    struct TaskList* taskList;
-    struct CompletedTasks* completedTasks;
-    struct DoublyTaskList* doublyTaskList;
-    struct PendingTasks* pendingTasks;
-    struct UndoStack* history;
+    TaskList* taskList;
+    CompletedTasks* completedTasks;
+    DoublyTaskList* doublyTaskList;
+    PendingTasks* pendingTasks;
+    UndoStack* history;
 } User;
+
+// funções utilitárias
+void clearBuffer();
 
 //funções de usuário
 int checkUserId(User* userList, int id);
 int generateRandUserId(User* userList);
-void clearBuffer();
 User* setterUser(User* newUser, User* userList);
 User* allocateUser();
 User* initializeUserList();
@@ -63,18 +67,25 @@ void displayUserList(User* userList);
 Task* allocateTask();
 int checkTaskId(TaskList* taskList, int id);
 int generateRandTaskId(TaskList* taskList);
-Task* setterTask(Task* newTask, TaskList* taskList);
+Task* setterTask(TaskList* taskList);
 
 // funções de lista encadeada
 TaskList* initializeTaskList();
 TaskList* allocateTaskNode();
 TaskList* getTaskById(TaskList* taskList, int key);
 TaskList* getLastTaskNode(TaskList* taskList);
-TaskList* addTaskToList(TaskList* taskList);
+TaskList* addTaskToList(Task* newTask, TaskList* taskList);
 void displayTaskList(TaskList* taskList);
+TaskList* removeTaskFromList(TaskList* taskList, int key);
+void displayTaskListRecursive(TaskList* taskList);
 
 //funções da lista de tarefas duplamente encadeada
 DoublyTaskList* initializeDoublyTaskList();
+DoublyTaskList* allocateTaskNode_D();
+DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList);
+DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList);
+
+//funções da lista circular de tarefas concluídas
 
 //funções da lista de pendentes
 PendingTasks* initializePendingTasks();
