@@ -3,8 +3,51 @@
 #include <string.h>
 #include <time.h>
 #include "functions.h"
+#include "sort.h"
+
+DoublyTaskList* sortList(DoublyTaskList* head) {
+    int choice;
+
+    printf("escolha um algoritmo de ordenacao:\n");
+    printf("1. bubble sort\n");
+    printf("2. selection sort\n");
+    printf("3. insertion sort\n");
+    printf("4. merge sort\n");
+    printf("5. quick sort\n");
+    printf("digite o número do algoritmo desejado: ");
+    scanf("%d", &choice);
+
+    switch (choice) {
+        case 1:
+            printf("usando bubble sort...\n");
+            bubbleSort(head);
+            break;
+        case 2:
+            printf("usando selection sort...\n");
+            selectionSort(head);
+            break;
+        case 3:
+            printf("usando insertion sort...\n");
+            insertionSort(&head);
+            break;
+        case 4:
+            printf("usando merge sort...\n");
+            head = mergeSort(head);
+            break;
+        case 5:
+            printf("usando quick sort...\n");
+            head = quickSort(head);
+            break;
+        default:
+            printf("escolha invalida! nenhuma alteracao feita\n");
+            break;
+    }
+
+    return head;
+}
 
 void userMenu(User* currentUser) {
+    system("clear");
     int userOption;
 
     do {
@@ -15,7 +58,7 @@ void userMenu(User* currentUser) {
         printf("3 - concluir uma tarefa (função ainda não implementada)\n");
         printf("4 - apagar registro de tarefa (função ainda não implementada)\n");
         printf("5 - procurar tarefa (função ainda não implementada)\n");
-        printf("6 - ordenar lista de tarefas (função ainda não implementada)\n");
+        printf("6 - ordenar lista de tarefas:\n");
         printf("7 - listar tarefas pendentes\n");
         printf("8 - listar tarefas concluídas\n");
         printf("9 - reverter ato (função ainda não implementada).\n");
@@ -32,23 +75,19 @@ void userMenu(User* currentUser) {
                 displayTaskListRecursive(currentUser->taskList);
                 break;
             case 2:
-                Task* newTask = allocateTask(); // aloca a nova tarefa
-                newTask = setterTask(newTask, currentUser->taskList); // captura as informações da tarefa
-
-                // adiciona a tarefa na lista de tarefas concluídas ou pendentes com base no status
+                Task* newTask = allocateTask(); 
+                newTask = setterTask(newTask, currentUser->taskList); 
+                
                 if (newTask->status == 1) {
-                    currentUser->completedTasks = addTaskToCircularList(newTask, currentUser->completedTasks); // lista circular de tarefas concluídas
+                    currentUser->completedTasks = addTaskToCircularList(newTask, currentUser->completedTasks); 
                 } else {
                     if (currentUser->pendingTasks == NULL) {
                         currentUser->pendingTasks = allocatePendingTasks();
                     }
-                    insertTaskIntoPendingList(currentUser->pendingTasks, newTask); // lista de tarefas pendentes
+                    insertTaskIntoPendingList(currentUser->pendingTasks, newTask); 
                 }
-
-                // adiciona a tarefa na lista simples (taskList)
+                
                 currentUser->taskList = addTaskToList(newTask, currentUser->taskList);
-
-                // adiciona a tarefa na lista duplamente encadeada (doublyTaskList)
                 currentUser->doublyTaskList = addTaskToList_D(newTask, currentUser->doublyTaskList);
 
                 printf("tarefa registrada com sucesso!\n");
@@ -73,7 +112,9 @@ void userMenu(User* currentUser) {
                 }
                 break;
             case 6:
-                printf("\nordenar lista de tarefas (função ainda não implementada).\n");
+                currentUser->doublyTaskList = sortList(currentUser->doublyTaskList);
+                printf("lista ordenada!\nlista após a ordenação: ");
+                displayDoublyTaskList(currentUser->doublyTaskList);
                 break;
             case 7:
                 printf("\nlistando tarefas pendentes:\n");

@@ -374,6 +374,23 @@ DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList) { // in
     return taskList;
 }
 
+void displayDoublyTaskList(DoublyTaskList* taskList) { // exibe a lista de tarefas dupla
+    if (taskList == NULL) {
+        printf("não há tarefas na lista\n");
+        return;
+    }
+
+    DoublyTaskList* aux = taskList;
+    printf("ids das tarefas:\n");
+    while (aux != NULL) {
+        if (aux->task != NULL) {
+            printf("id: %d, nome: %d, prioridade: %d, status: %d\n", 
+                    aux->task->id, aux->task->name, aux->task->priority, aux->task->status);
+        }
+        aux = aux->next;
+    }
+}
+
 //funções da lista de concluídas
 CompletedTasks* initializeCompletedTasks() { // função clichẽ de inicialização
     return NULL;
@@ -507,7 +524,7 @@ void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
     taskToComplete->task->status = 1; // status 1 significa concluída
 
     completedTasks = addTaskToCircularList(taskToComplete->task, completedTasks);
-    
+
     free(taskToComplete);
 }
 

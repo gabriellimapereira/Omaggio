@@ -83,6 +83,7 @@ DoublyTaskList* initializeDoublyTaskList();
 DoublyTaskList* allocateTaskNode_D();
 DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList);
 DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList);
+void displayDoublyTaskList(DoublyTaskList* taskList);
 
 //funções da lista circular de tarefas concluídas
 CompletedTasks* initializeCompletedTasks();
