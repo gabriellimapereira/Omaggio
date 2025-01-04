@@ -3,9 +3,7 @@
 
 typedef struct Task {
     int id;
-    char name[50];
-    char deadline[10];
-    char description[500];
+    int name;
     int priority;
     int status;
 } Task;
@@ -37,7 +35,7 @@ typedef struct UndoStack {
 } UndoStack;
 
 typedef struct User {
-    char name[50];
+    int name;
     int id;
     struct User* next;
     struct User* prev;
@@ -67,7 +65,8 @@ void displayUserList(User* userList);
 Task* allocateTask();
 int checkTaskId(TaskList* taskList, int id);
 int generateRandTaskId(TaskList* taskList);
-Task* setterTask(TaskList* taskList);
+Task* setterTask(Task* newTask, TaskList* taskList);
+void printTask(Task* task);
 
 // funções de lista encadeada
 TaskList* initializeTaskList();
@@ -86,9 +85,17 @@ DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList);
 DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList);
 
 //funções da lista circular de tarefas concluídas
+CompletedTasks* initializeCompletedTasks();
+CompletedTasks* allocateCircularNode();
+CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks);
+void listCompletedTasks(CompletedTasks* completedTasks);
 
 //funções da lista de pendentes
 PendingTasks* initializePendingTasks();
+PendingTasks* allocatePendingTasks();
+void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask);
+void listPendingTasks(PendingTasks* pendingTasks);
+void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 
 //funções da pilha de reversão
 UndoStack* initializeUndoStack();

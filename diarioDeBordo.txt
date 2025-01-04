@@ -4,7 +4,6 @@ quando eu estava pensando em um nome para o gerenciador, estava
 escutando Velha Infância dos Tribalistas, daí puxei o nome. decidi
 que seria italiano pois é uma língua com certa importância pessoal.
 
-
 18/12/2024 ----------------------------------------------------------
 tudo parece muito claro ao mesmo tempo que é muito embaçado.
 as funções de usuário estão operantes e testadas (pelo menos no bá-
@@ -50,3 +49,11 @@ sinto que joguei umas duas horas no lixo.
 oi, eu sumi por uns dias. esse trabalho tá dando erro pra peste. ten-
 tei um script de teste e tive que corrigir muita, muita coisa. agora
 me resta tentar recuperar o tempo "perdido". bora trabalhar.
+
+30/12/2024 ----------------------------------------------------------
+eu tive uma leve crise de vergonha na cara e decidi correr atrás do 
+tempo perdido. hoje estou fazendo quase todas as implementações pos-
+síveis. quero terminar esse trabalho até quarta.
+
+04/01/2025 ----------------------------------------------------------
+im back.

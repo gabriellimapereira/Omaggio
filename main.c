@@ -1,101 +1,150 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "functions.h"
 
-void testUserMenu() {
-    User* userList = initializeUserList();
-    User* currentUser = NULL;
+void userMenu(User* currentUser) {
+    int userOption;
 
-    printf("\n=== teste do menu principal ===\n");
+    do {
+        printf("\n=== menu do usuário ===\n");
+        printf("0 - voltar ao menu principal\n");
+        printf("1 - listar todas as tarefas\n");
+        printf("2 - inserir nova tarefa\n");
+        printf("3 - concluir uma tarefa (função ainda não implementada)\n");
+        printf("4 - apagar registro de tarefa (função ainda não implementada)\n");
+        printf("5 - procurar tarefa (função ainda não implementada)\n");
+        printf("6 - ordenar lista de tarefas (função ainda não implementada)\n");
+        printf("7 - listar tarefas pendentes\n");
+        printf("8 - listar tarefas concluídas\n");
+        printf("9 - reverter ato (função ainda não implementada).\n");
+        printf("escolha uma opção: ");
+        scanf("%d", &userOption);
+        clearBuffer();
 
-    printf("\n[teste 1] cadastrando um novo usuário...\n");
-    userList = addUser(userList);
-    printf("usuário cadastrado com sucesso!\n");
+        switch (userOption) {
+            case 0:
+                printf("voltando ao menu principal...\n");
+                break;
+            case 1:
+                printf("\nlistando todas as tarefas:\n");
+                displayTaskListRecursive(currentUser->taskList);
+                break;
+            case 2:
+                Task* newTask = allocateTask(); // aloca a nova tarefa
+                newTask = setterTask(newTask, currentUser->taskList); // captura as informações da tarefa
 
-    printf("\n[teste 2] listando usuários...\n");
-    displayUserList(userList);
+                // adiciona a tarefa na lista de tarefas concluídas ou pendentes com base no status
+                if (newTask->status == 1) {
+                    currentUser->completedTasks = addTaskToCircularList(newTask, currentUser->completedTasks); // lista circular de tarefas concluídas
+                } else {
+                    if (currentUser->pendingTasks == NULL) {
+                        currentUser->pendingTasks = allocatePendingTasks();
+                    }
+                    insertTaskIntoPendingList(currentUser->pendingTasks, newTask); // lista de tarefas pendentes
+                }
 
-    printf("\n[teste 3] selecionando o usuário cadastrado...\n");
-    currentUser = getUserById(userList, userList->id);
-    if (currentUser) {
-        printf("usuário '%s' selecionado com sucesso!\n", currentUser->name);
-    } else {
-        printf("falha ao selecionar usuário.\n");
-    }
+                // adiciona a tarefa na lista simples (taskList)
+                currentUser->taskList = addTaskToList(newTask, currentUser->taskList);
 
-    printf("\n[teste 4] removendo o usuário...\n");
-    userList = removeUserById(userList, userList->id);
-    printf("usuário removido com sucesso!\n");
+                // adiciona a tarefa na lista duplamente encadeada (doublyTaskList)
+                currentUser->doublyTaskList = addTaskToList_D(newTask, currentUser->doublyTaskList);
 
-    printf("\n[teste 5] verificando lista de usuários...\n");
-    displayUserList(userList);
+                printf("tarefa registrada com sucesso!\n");
+                break;
+            case 3:
+                printf("\nconcluindo uma tarefa...\n");
+                completeTask(currentUser->pendingTasks, currentUser->completedTasks);
+                break;
+            case 4:
+                printf("\napagar registro de tarefa (função ainda não implementada).\n");
+                break;
+            case 5:
+                printf("\ndigite o id da tarefa:\n");
+                int key;
+                scanf("%d", &key);
+                clearBuffer();
+                TaskList* aux = getTaskById(currentUser->taskList, key);
+                if (aux) {
+                    printTask(aux->task);
+                } else {
+                    printf("tarefa não encontrada.\n");
+                }
+                break;
+            case 6:
+                printf("\nordenar lista de tarefas (função ainda não implementada).\n");
+                break;
+            case 7:
+                printf("\nlistando tarefas pendentes:\n");
+                listPendingTasks(currentUser->pendingTasks);
+                break;
+            case 8:
+                printf("\nlistando tarefas concluídas:\n");
+                listCompletedTasks(currentUser->completedTasks);
+                break;
+            case 9:
+                printf("\nreverter ato (função ainda não implementada).\n");
+                break;
+            default:
+                printf("\nopção inválida. tente novamente.\n");
+        }
+
+    } while (userOption != 0);
 }
 
-void testTaskMenu() {
-    printf("\n=== teste do menu de tarefas ===\n");
+void mainMenu(User* userList) {
+    int option;
+    User* currentUser = NULL;
 
-    User* testUser = malloc(sizeof(User));
-    strcpy(testUser->name, "usuário teste");
-    testUser->id = 1234;
-    testUser->taskList = initializeTaskList();
+    do {
+        printf("\n=== menu principal ===\n");
+        printf("0 - sair\n");
+        printf("1 - logar como usuário\n");
+        printf("2 - listar usuários e seus ids\n");
+        printf("3 - registrar novo usuário\n");
+        printf("4 - apagar usuário (função ainda não implementada)\n");
+        printf("escolha uma opção: ");
+        scanf("%d", &option);
+        clearBuffer();
 
-    printf("\n[teste 1] adicionando uma nova tarefa...\n");
-    Task* newTask1 = allocateTask();
-    newTask1->id = 5678;
-    strcpy(newTask1->name, "tarefa 1");
-    strcpy(newTask1->description, "descrição da tarefa 1");
-    strcpy(newTask1->deadline, "30/12/2024");
-    newTask1->priority = 3;
-    newTask1->status = 0;
-    testUser->taskList = addTaskToList(newTask1, testUser->taskList);
-    printf("tarefa 1 adicionada com sucesso!\n");
-
-    printf("\n[teste 2] adicionando outra tarefa...\n");
-    Task* newTask2 = allocateTask();
-    newTask2->id = 5679;
-    strcpy(newTask2->name, "tarefa 2");
-    strcpy(newTask2->description, "descrição da tarefa 2");
-    strcpy(newTask2->deadline, "05/01/2025");
-    newTask2->priority = 1;
-    newTask2->status = 0;
-    testUser->taskList = addTaskToList(newTask2, testUser->taskList);
-    printf("tarefa 2 adicionada com sucesso!\n");
-
-    printf("\n[teste 3] listando tarefas do usuário...\n");
-    displayTaskListRecursive(testUser->taskList);
-
-    printf("\n[teste 4] removendo a tarefa 1...\n");
-    testUser->taskList = removeTaskFromList(testUser->taskList, newTask1->id);
-    printf("tarefa 1 removida com sucesso!\n");
-
-    printf("\n[teste 5] verificando lista de tarefas após remoção...\n");
-    displayTaskListRecursive(testUser->taskList);
-
-    printf("\n[teste 6] alterando o status da tarefa 2 para concluída...\n");
-    newTask2->status = 1;
-    printf("tarefa 2 status alterado para concluída.\n");
-
-    printf("\n[teste 7] listando tarefas após alteração de status...\n");
-    displayTaskListRecursive(testUser->taskList);
-
-    printf("\n[teste 8] removendo a tarefa 2...\n");
-    testUser->taskList = removeTaskFromList(testUser->taskList, newTask2->id);
-    printf("tarefa 2 removida com sucesso!\n");
-
-    printf("\n[teste 9] verificando lista de tarefas após remoção final...\n");
-    displayTaskListRecursive(testUser->taskList);
-
-    free(testUser);
+        switch (option) {
+            case 0:
+                printf("saindo do programa...\n");
+                break;
+            case 1:
+                {
+                    int id;
+                    printf("digite o id do usuário: ");
+                    scanf("%d", &id);
+                    clearBuffer();
+                    currentUser = getUserById(userList, id);
+                    if (currentUser) {
+                        printf("usuário '%d' logado com sucesso.\n", currentUser->name);
+                        userMenu(currentUser);
+                    } else {
+                        printf("id não encontrado. tente novamente.\n");
+                    }
+                }
+                break;
+            case 2:
+                printf("\nlistando usuários e ids:\n");
+                displayUserList(userList);
+                break;
+            case 3:
+                userList = addUser(userList);
+                break;
+            case 4:
+                printf("\napagar usuário (função ainda não implementada).\n");
+                break;
+            default:
+                printf("\nopção inválida. tente novamente.\n");
+        }
+    } while (option != 0);
 }
 
 int main() {
-    printf("\n=== iniciando script de teste ===\n");
-
-    testUserMenu();
-
-    testTaskMenu();
-
-    printf("\n=== fim do script de teste ===\n");
+    User* userList = NULL;
+    mainMenu(userList);
     return 0;
 }
