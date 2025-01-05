@@ -61,6 +61,7 @@ User* getLastUser(User* userList);
 User* addUser(User* userList);
 User* removeUserById(User* userList, int id);
 void displayUserList(User* userList);
+void displayUser(User*);
 
 // funções de tarefas
 Task* allocateTask();
@@ -100,5 +101,10 @@ void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 
 //funções da pilha de reversão
 UndoStack* initializeUndoStack();
+
+//busca binária de usuário
+int size(User* list);
+User* getUserAtIndex(User* list, int index);
+User* binarySearchUser(User* list, const char* targetName);
 
 #endif

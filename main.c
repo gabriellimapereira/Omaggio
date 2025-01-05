@@ -145,6 +145,7 @@ void mainMenu(User* userList) {
         printf("2 - listar usuários e seus ids\n");
         printf("3 - registrar novo usuário\n");
         printf("4 - apagar usuário (função ainda não implementada)\n");
+        printf("5 - buscar um usuário (busca binária)\n");
         printf("escolha uma opção: ");
         scanf("%d", &option);
         clearBuffer();
@@ -175,6 +176,15 @@ void mainMenu(User* userList) {
                 break;
             case 4:
                 printf("\napagar usuário (função ainda não implementada).\n");
+                break;
+            case 5:
+                char name[50];
+                printf("digite o nome do usuário: \n");
+                setbuf(stdin, NULL);
+                scanf("%[^\n]", name);
+                User* aux = binarySearchUser(userList, name);
+                printf("usuário encontrado: \n");
+                displayUser(aux);
                 break;
             default:
                 printf("\nopção inválida. tente novamente.\n");
