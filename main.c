@@ -144,7 +144,7 @@ void mainMenu(User* userList) {
         printf("1 - logar como usuário\n");
         printf("2 - listar usuários e seus ids\n");
         printf("3 - registrar novo usuário\n");
-        printf("4 - apagar usuário (função ainda não implementada)\n");
+        printf("4 - apagar usuário\n");
         printf("5 - buscar um usuário (busca binária)\n");
         printf("escolha uma opção: ");
         scanf("%d", &option);
@@ -175,7 +175,10 @@ void mainMenu(User* userList) {
                 userList = addUser(userList);
                 break;
             case 4:
-                printf("\napagar usuário (função ainda não implementada).\n");
+                int key;
+                printf("digite o id do usuário:\n");
+                scanf("%d", &key);
+                userList = deleteUser(userList, key);
                 break;
             case 5:
                 char name[50];

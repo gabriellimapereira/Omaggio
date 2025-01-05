@@ -59,7 +59,7 @@ User* initializeUserList();
 User* getUserById(User* userList, int id);
 User* getLastUser(User* userList);
 User* addUser(User* userList);
-User* removeUserById(User* userList, int id);
+User* deleteUser(User* userList, int key);
 void displayUserList(User* userList);
 void displayUser(User*);
 
@@ -76,8 +76,8 @@ TaskList* allocateTaskNode();
 TaskList* getTaskById(TaskList* taskList, int key);
 TaskList* getLastTaskNode(TaskList* taskList);
 TaskList* addTaskToList(Task* newTask, TaskList* taskList);
-TaskList* removeTaskFromList(TaskList* taskList, int key);
 void displayTaskListRecursive(TaskList* taskList);
+void freeTaskList(TaskList* taskList);
 
 //funções da lista de tarefas duplamente encadeada
 DoublyTaskList* initializeDoublyTaskList();
@@ -85,12 +85,14 @@ DoublyTaskList* allocateTaskNode_D();
 DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList);
 DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList);
 void displayDoublyTaskList(DoublyTaskList* taskList);
+void freeDoublyTaskList(DoublyTaskList* doublyTaskList);
 
 //funções da lista circular de tarefas concluídas
 CompletedTasks* initializeCompletedTasks();
 CompletedTasks* allocateCircularNode();
 CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks);
 void displayCompletedTasks(CompletedTasks* completedTasks);
+void freeCompletedTasks(CompletedTasks* completedTasks);
 
 //funções da lista de pendentes
 PendingTasks* initializePendingTasks();
@@ -98,6 +100,7 @@ PendingTasks* allocatePendingTasks();
 void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask);
 void displayPendingTasks(PendingTasks* pendingTasks);
 void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
+void freePendingTasks(PendingTasks* pendingTasks);
 
 //funções da pilha de reversão
 UndoStack* initializeUndoStack();
