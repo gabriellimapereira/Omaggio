@@ -3,7 +3,8 @@
 
 typedef struct Task {
     int id;
-    int name;
+    char name[50];
+    char description[300];
     int priority;
     int status;
 } Task;
@@ -35,7 +36,7 @@ typedef struct UndoStack {
 } UndoStack;
 
 typedef struct User {
-    int name;
+    char name[50];
     int id;
     struct User* next;
     struct User* prev;
@@ -74,7 +75,6 @@ TaskList* allocateTaskNode();
 TaskList* getTaskById(TaskList* taskList, int key);
 TaskList* getLastTaskNode(TaskList* taskList);
 TaskList* addTaskToList(Task* newTask, TaskList* taskList);
-void displayTaskList(TaskList* taskList);
 TaskList* removeTaskFromList(TaskList* taskList, int key);
 void displayTaskListRecursive(TaskList* taskList);
 
@@ -89,13 +89,13 @@ void displayDoublyTaskList(DoublyTaskList* taskList);
 CompletedTasks* initializeCompletedTasks();
 CompletedTasks* allocateCircularNode();
 CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks);
-void listCompletedTasks(CompletedTasks* completedTasks);
+void displayCompletedTasks(CompletedTasks* completedTasks);
 
 //funções da lista de pendentes
 PendingTasks* initializePendingTasks();
 PendingTasks* allocatePendingTasks();
 void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask);
-void listPendingTasks(PendingTasks* pendingTasks);
+void displayPendingTasks(PendingTasks* pendingTasks);
 void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 
 //funções da pilha de reversão

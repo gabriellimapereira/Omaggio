@@ -29,7 +29,8 @@ int generateRandUserId(User* userList) { //gera um id randomizado
 
 User* setterUser(User* newUser, User* userList) { // captura as informações de usuário
     printf("digite o nome do novo usuário: ");
-    scanf("%d", &newUser->name);
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", newUser->name);
 
     newUser->id = generateRandUserId(userList);
     printf("seu id é: %d\n", newUser->id);
@@ -142,7 +143,7 @@ void displayUserList(User* userList) { // exibe a lista
 
     User* aux = userList;
     while (aux != NULL) {
-        printf("usuário: fulano\nid: %d\n\n", aux->id);
+        printf("usuário: %s\nid: %d\n\n", aux->name, aux->id);
         aux = aux->next;
     }
 }
@@ -176,7 +177,12 @@ int generateRandTaskId(TaskList* taskList) { // gera um id de tarefa aleatório
 
 Task* setterTask(Task* newTask, TaskList* taskList) { // captura as informações de usuário
     printf("digite o nome da tarefa:\n");
-    scanf("%d", &newTask->name);
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", newTask->name);
+
+    printf("escreva uma breve descrição da tarefa:\n");
+    setbuf(stdin, NULL);
+    scanf("%[^\n]", newTask->description);
 
     while (1) {
         printf("digite a prioridade da tarefa (1 a 5):\n");
@@ -205,13 +211,14 @@ void printTask(Task* task) {
 
     printf("\n=== detalhes da tarefa ===\n");
     printf("ID: %d\n", task->id);
-    printf("nome: %d\n", task->name);
+    printf("nome: %s\n", task->name);
+    printf("descrição: %s\n", task->description);
     printf("prioridade: %d\n", task->priority);
-    printf("status: %d\n", task->status);
+    printf("status: %s\n\n", task->status == 0 ? "pendente" : "concluída");
 }
 
 // funções das listas de tarefas
-TaskList* initializeTaskList() { 
+TaskList* initializeTaskList() { // inicializa a lista de tarefas
     return NULL;
 }
 
@@ -261,22 +268,6 @@ TaskList* addTaskToList(Task* newTask, TaskList* taskList) { // adiciona tarefa 
     }
 }
 
-void displayTaskList(TaskList* taskList) { // exibe a lista de tarefas
-    if (taskList == NULL) {
-        printf("não há tarefas na lista\n");
-        return;
-    }
-
-    TaskList* aux = taskList;
-    printf("ids das tarefas:\n");
-    while (aux != NULL) {
-        if (aux->task != NULL) {
-            printf("id: %d\n", aux->task->id);
-        }
-        aux = aux->next;
-    }
-}
-
 TaskList* removeTaskFromList(TaskList* taskList, int key) { // remove uma tarefa da lista
     if (taskList == NULL) {
         printf("a lista está vazia!\n");
@@ -319,11 +310,8 @@ void displayTaskListRecursive(TaskList* taskList) { // exibe a lista recursivame
         printf("lista vazia!\n");
         return;
     }
-
-    printf("id: %d\n", taskList->task->id);
-    printf("nome: %d\n", taskList->task->name);
-    printf("prioridade: %d\n", taskList->task->priority);
-    printf("status: %s\n\n", taskList->task->status == 0 ? "pendente" : "concluída");
+    
+    printTask(taskList->task);
 
     displayTaskListRecursive(taskList->next);
 }
@@ -384,8 +372,7 @@ void displayDoublyTaskList(DoublyTaskList* taskList) { // exibe a lista de taref
     printf("ids das tarefas:\n");
     while (aux != NULL) {
         if (aux->task != NULL) {
-            printf("id: %d, nome: %d, prioridade: %d, status: %d\n", 
-                    aux->task->id, aux->task->name, aux->task->priority, aux->task->status);
+            printf("id: %d, nome: %s, prioridade: %d, status: %d\n", aux->task->id, aux->task->name, aux->task->priority, aux->task->status);
         }
         aux = aux->next;
     }
@@ -438,19 +425,19 @@ CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTa
     return completedTasks;
 }
 
-void listCompletedTasks(CompletedTasks* completedTasks) { // exibe as tarefas cumpridas
+void displayCompletedTasks(CompletedTasks* completedTasks) { // exibe as tarefas cumpridas
     if (completedTasks == NULL) {
         printf("\nNenhuma tarefa concluída.\n");
         return;
     }
 
-    CompletedTasks* current = completedTasks;
-    printf("\n=== Tarefas Concluídas ===\n");
+    CompletedTasks* aux = completedTasks;
+    printf("\n=== tarefas concluídas ===\n");
     
     do {
-        printTask(current->task);
-        current = current->next;
-    } while (current != completedTasks); 
+        printTask(aux->task);
+        aux = aux->next;
+    } while (aux != completedTasks); 
 }
 
 //funções da lista de pendentes
@@ -489,20 +476,20 @@ void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask) { // i
     }
 }
 
-void listPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pendẽncias
+void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pendẽncias
     if (pendingTasks == NULL || pendingTasks->first == NULL) {
-        printf("\nNão há tarefas pendentes para listar.\n");
+        printf("\nnão há tarefas pendentes para listar.\n");
         return;
     }
 
     TaskList* current = pendingTasks->first;
-    printf("\nTarefas pendentes:\n");
+    printf("\ntarefas pendentes:\n");
 
     while (current != NULL) {
-        printf("ID: %d\n", current->task->id);
-        printf("Nome: %d\n", current->task->name);
-        printf("Prioridade: %d\n", current->task->priority);
-        printf("Status: %s\n", current->task->status == 0 ? "Pendente" : "Concluída");
+        printf("id: %d\n", current->task->id);
+        printf("nome: %s\n", current->task->name);
+        printf("prioridade: %d\n", current->task->priority);
+        printf("status: %s\n", current->task->status == 0 ? "pendente" : "concluída");
         printf("\n");
 
         current = current->next;

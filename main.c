@@ -118,11 +118,11 @@ void userMenu(User* currentUser) {
                 break;
             case 7:
                 printf("\nlistando tarefas pendentes:\n");
-                listPendingTasks(currentUser->pendingTasks);
+                displayPendingTasks(currentUser->pendingTasks);
                 break;
             case 8:
                 printf("\nlistando tarefas concluídas:\n");
-                listCompletedTasks(currentUser->completedTasks);
+                displayCompletedTasks(currentUser->completedTasks);
                 break;
             case 9:
                 printf("\nreverter ato (função ainda não implementada).\n");
@@ -154,19 +154,17 @@ void mainMenu(User* userList) {
                 printf("saindo do programa...\n");
                 break;
             case 1:
-                {
                     int id;
                     printf("digite o id do usuário: ");
                     scanf("%d", &id);
                     clearBuffer();
                     currentUser = getUserById(userList, id);
                     if (currentUser) {
-                        printf("usuário '%d' logado com sucesso.\n", currentUser->name);
+                        printf("usuário '%s' logado com sucesso.\n", currentUser->name);
                         userMenu(currentUser);
                     } else {
                         printf("id não encontrado. tente novamente.\n");
                     }
-                }
                 break;
             case 2:
                 printf("\nlistando usuários e ids:\n");
@@ -185,6 +183,7 @@ void mainMenu(User* userList) {
 }
 
 int main() {
+    srand(time(NULL));
     User* userList = NULL;
     mainMenu(userList);
     return 0;
