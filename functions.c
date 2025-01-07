@@ -181,6 +181,8 @@ User* deleteUser(User* userList, int key) {
             freeCompletedTasks(currentUser->completedTasks);
             free(currentUser); 
 
+            printf("usuario deletado com sucesso!\n");
+
             return userList; 
         }
 
@@ -439,7 +441,7 @@ void displayDoublyTaskList(DoublyTaskList* taskList) {
     }
 
     DoublyTaskList* aux = taskList;
-    printf("ids das tarefas:\n");
+    printf("dados das tarefas:\n");
     while (aux != NULL) {
         if (aux->task != NULL) {
             printf("id: %d, nome: %s, prioridade: %d, status: %d\n", aux->task->id, aux->task->name, aux->task->priority, aux->task->status);
@@ -458,7 +460,6 @@ void freeDoublyTaskList(DoublyTaskList* doublyTaskList) {
         doublyTaskList = next; 
     }
 
-    printf("free da dupla ok\n");
 }
 
 //funções da lista de concluídas
@@ -657,12 +658,12 @@ void freePendingTasks(PendingTasks* pendingTasks) {
     }
 }
 
-// retorna o tamanho da lista de usuários
-// recebe a lista de usuários (User*)
+// retorna o tamanho da lista de tarefas
+// recebe a lista de tarefas (DoublyTaskList*)
 // retorna o tamanho (int)
-int size(User* list) { 
+int size(DoublyTaskList* list) { 
     int count = 0;
-    User* aux = list;
+    DoublyTaskList* aux = list;
     while (aux != NULL) {
         count++;
         aux = aux->next;
@@ -670,11 +671,11 @@ int size(User* list) {
     return count;
 }
 
-// retorna o usuário no índice especificado da lista
-// recebe a lista de usuários (User*) e o índice (int)
-// retorna o ponteiro para o usuário (User*)
-User* getUserAtIndex(User* list, int index) {
-    User* aux = list;
+// retorna a tarefa no índice especificado da lista
+// recebe a lista de tarefas (DoublyTaskList*) e o índice (int)
+// retorna o ponteiro para a tarefa (DoublyTaskList*)
+DoublyTaskList* getTaskAtIndex(DoublyTaskList* list, int index) {
+    DoublyTaskList* aux = list;
     int count = 0;
     while (aux != NULL && count < index) {
         aux = aux->next;
@@ -683,31 +684,31 @@ User* getUserAtIndex(User* list, int index) {
     return aux; 
 }
 
-// realiza a busca binária por nome na lista de usuários
-// recebe a lista de usuários (User*) e o nome alvo (const char*)
-// retorna o ponteiro para o usuário encontrado (User*) ou NULL
-User* binarySearchUser (User* list, const char* targetName) { // a grande busca binária
-    int left = 1;
-    int right = size(list);
+// realiza a busca binária por nome na lista de tarefas
+// recebe a lista de tarefas (DoublyTaskList*) e o nome alvo (const char*)
+// retorna o ponteiro para a tarefa encontrada (DoublyTaskList*) ou NULL
+DoublyTaskList* binarySearchTask(DoublyTaskList* list, const char* targetName) {
+    int left = 0;
+    int right = size(list) - 1;
 
     while (left <= right) {
         int mid = left + (right - left) / 2;
-        User* midNode = getUserAtIndex(list, mid);
+        DoublyTaskList* midNode = getTaskAtIndex(list, mid);
 
         if (midNode == NULL) {
             return NULL; 
         }
 
-        int comparison = strcmp(midNode->name, targetName);
+        int comparison = strcmp(midNode->task->name, targetName);
 
         if (comparison == 0) {
-            return midNode; 
+            return midNode;  // tarefa encontrada
         } else if (comparison < 0) {
-            left = mid + 1; 
+            left = mid + 1;  // busca na metade direita
         } else {
-            right = mid - 1; 
+            right = mid - 1;  // busca na metade esquerda
         }
     }
 
-    return NULL; 
+    return NULL;  // tarefa não encontrada
 }

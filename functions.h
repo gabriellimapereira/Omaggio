@@ -110,9 +110,9 @@ void displayPendingTasks(PendingTasks* pendingTasks);
 void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 void freePendingTasks(PendingTasks* pendingTasks);
 
-//busca binária de usuário
-int size(User* list);
-User* getUserAtIndex(User* list, int index);
-User* binarySearchUser(User* list, const char* targetName);
+//busca binária de tarefa
+int size(DoublyTaskList* list);
+DoublyTaskList* getTaskAtIndex(DoublyTaskList* list, int index);
+DoublyTaskList* binarySearchTask(DoublyTaskList* list, const char* targetName);
 
 #endif

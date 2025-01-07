@@ -59,6 +59,7 @@ void userMenu(User* currentUser) {
         printf("4 - listar fila tarefas pendentes\n");
         printf("5 - listar tarefas concluídas\n");
         printf("6 - concluir tarefa pendente da fila\n");
+        printf("7 - buscar tarefa pelo nome (busca binária)\n");
         printf("0 - voltar ao menu principal\n");
         printf("=========================================\n");
         printf("escolha uma opção: ");
@@ -106,8 +107,21 @@ void userMenu(User* currentUser) {
             case 6: // completar tarefa
                 completeTask(currentUser->pendingTasks, currentUser->completedTasks);
                 break;
+            case 7:
+            char name[50];
+                printf("digite o nome do tarefa: \n");
+                setbuf(stdin, NULL);
+                scanf("%[^\n]", name);
+                DoublyTaskList* aux = binarySearchTask(currentUser->doublyTaskList, name);
+                if (aux == NULL) {
+                    printf("tarefa desaparecido! (não encontrada)\n");
+                } else {
+                    printf("tarefa encontrada: \n");
+                    printTask(aux->task);
+                }
+                break;
             default:
-                printf("opção inválida. tente novamente! (algo válido, de preferẽncia!)\n");
+                printf("opção inválida. tente novamente! (alguma válido, de preferẽncia)\n");
         }
     } while (userOption != 0);
 }
@@ -123,7 +137,6 @@ void mainMenu(User* userList) {
         printf("2 - listar usuários e seus ids\n");
         printf("3 - registrar novo usuário\n");
         printf("4 - apagar usuário\n");
-        printf("5 - buscar usuário pelo nome (busca binária)\n");
         printf("0 - sair\n");
         printf("========================================\n");
         printf("escolha uma opção: ");
@@ -159,19 +172,6 @@ void mainMenu(User* userList) {
                 printf("digite o id do usuário: ");
                 scanf("%d", &key);
                 userList = deleteUser(userList, key);
-                break;
-            case 5: // procura por um determinado usuário através do seu nome
-                char name[50];
-                printf("digite o nome do usuário: \n");
-                setbuf(stdin, NULL);
-                scanf("%[^\n]", name);
-                User* aux = binarySearchUser(userList, name);
-                if (aux == NULL) {
-                    printf("usuaŕio desaparecido! (não encontrado)\n");
-                } else {
-                    printf("usuário encontrado: \n");
-                    displayUser(aux);
-                }
                 break;
             default:
                 printf("opção inválida. tente de novo!\n");
