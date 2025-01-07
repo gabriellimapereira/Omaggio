@@ -41,7 +41,7 @@ mais árduas da minha vida.
 
 24/12/2024 ----------------------------------------------------------
 fiz algumas alterações que resolvi deletar. tentei separar as funções
-em cabeçalhos diferentes, mas vi que ficaria masi bagunçado. ficariam
+em cabeçalhos diferentes, mas vi que ficaria mais bagunçado. ficariam
 muitos arquivos, então voltei ao estado onde me encontro atualmente.
 sinto que joguei umas duas horas no lixo.
 
@@ -60,3 +60,7 @@ im back.
 
 05/01/2025 ----------------------------------------------------------
 então é isso que é salvar o período em uma semana?  
+
+06/01/2025 ----------------------------------------------------------
+parece que alcancei a iluminação após corrigir o erro da função de 
+liberar (apagar) usuário.

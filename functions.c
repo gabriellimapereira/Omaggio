@@ -39,7 +39,6 @@ User* setterUser(User* newUser, User* userList) { // captura as informações de
     newUser->completedTasks = NULL;
     newUser->doublyTaskList = NULL;
     newUser->pendingTasks = initializePendingTasks();
-    newUser->history = NULL;
 
     return newUser;
 }
@@ -135,31 +134,26 @@ User* deleteUser(User* userList, int key) {
     while (currentUser != NULL) {
         if (currentUser->id == key) {
             if (previousUser == NULL) {
-                userList = currentUser->next;
+                userList = currentUser->next; 
             } else {
-                previousUser->next = currentUser->next;
+                previousUser->next = currentUser->next; 
             }
 
             freeTaskList(currentUser->taskList);
-            freeCompletedTasks(currentUser->completedTasks);
             freePendingTasks(currentUser->pendingTasks);
             freeDoublyTaskList(currentUser->doublyTaskList);
-            free(currentUser->history);
-            free(currentUser);
+            freeCompletedTasks(currentUser->completedTasks);
+            free(currentUser); 
 
-            return userList;
-        } else {
-            printf("id não encontrado!\n");
+            return userList; 
         }
 
-        previousUser = currentUser;
-        currentUser = currentUser->next;
+        previousUser  = currentUser ;
+        currentUser  = currentUser ->next;
     }
-
-    printf("usuário deletado com sucesso!\n");
+    printf("id não encontrado!\n");
     return userList;
 }
-
 
 // funções de tarefas
 Task* allocateTask() { // aloca a tarefa
@@ -297,14 +291,14 @@ void displayTaskListRecursive(TaskList* taskList) { // exibe a lista recursivame
     displayTaskListRecursive(taskList->next);
 }
 
-void freeTaskList(TaskList* taskList) { // libera a lista de tarefas principal
-    TaskList* current = taskList;
-    while (current != NULL) {
-        TaskList* next = current->next;
-        free(current->task); 
-        free(current);       
-        current = next;
+void freeTaskList(TaskList* taskList) {
+    while (taskList != NULL) {
+        TaskList* next = taskList->next;
+        free(taskList->task); 
+        free(taskList);
+        taskList = next; 
     }
+    printf("free da lista normal ok\n");
 }
 
 //funções da lista de tarefas duplamente encadeada
@@ -368,13 +362,14 @@ void displayDoublyTaskList(DoublyTaskList* taskList) { // exibe a lista de taref
     }
 }
 
-void freeDoublyTaskList(DoublyTaskList* doublyTaskList) { // libera a lista dupla de tarefas
-    DoublyTaskList* current = doublyTaskList;
-    while (current != NULL) {
-        DoublyTaskList* next = current->next; 
-        free(current);       
-        current = next;
+void freeDoublyTaskList(DoublyTaskList* doublyTaskList) {
+    while (doublyTaskList != NULL) {
+        DoublyTaskList* next = doublyTaskList->next;
+        free(doublyTaskList);
+        doublyTaskList = next; 
     }
+
+    printf("free da dupla ok\n");
 }
 
 //funções da lista de concluídas
@@ -439,13 +434,21 @@ void displayCompletedTasks(CompletedTasks* completedTasks) { // exibe as tarefas
     } while (aux != completedTasks); 
 }
 
-void freeCompletedTasks(CompletedTasks* completedTasks) {
-    CompletedTasks* current = completedTasks;
-    while (current != NULL) {
-        CompletedTasks* next = current->next;
-        free(current);      
-        current = next;
+void freeCompletedTasks(CompletedTasks* completedTasks) { // free da lista de tarefas completas
+    if (completedTasks == NULL) {
+        return; 
     }
+
+    CompletedTasks* aux = completedTasks;
+    CompletedTasks* head = completedTasks;
+
+    do {
+        CompletedTasks* next = aux->next; 
+        free(aux);
+        aux = next; 
+    } while (aux != head);
+
+    free(head); 
 }
 
 //funções da lista de pendentes
@@ -501,7 +504,7 @@ void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pe
 
 void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { // "completa" uma tarefa
     if (pendingTasks == NULL || pendingTasks->first == NULL) {
-        printf("\nNenhuma tarefa pendente para concluir.\n");
+        printf("\nnenhuma tarefa pendente para concluir!\n");
         return;
     }
 
@@ -518,19 +521,19 @@ void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
     free(taskToComplete);
 }
 
-void freePendingTasks(PendingTasks* pendingTasks) { // liberando a fila de pendentes
+void freePendingTasks(PendingTasks* pendingTasks) { // free da fila de pendentes
     if (pendingTasks == NULL) {
         return;
     }
 
-    TaskList* current = pendingTasks->first;
-    while (current != NULL) {
-        TaskList* next = current->next;
-        free(current);       
-        current = next;
+    TaskList* aux = pendingTasks->first;
+
+    while (aux != NULL) {
+        TaskList* next = aux->next;
+        free(aux); 
+        aux = next; 
     }
 
-    free(pendingTasks);
 }
 
 //funções da pilha de reversão
@@ -559,7 +562,7 @@ User* getUserAtIndex(User* list, int index) {
     return aux; 
 }
 
-User* binarySearchUser (User* list, const char* targetName) {
+User* binarySearchUser (User* list, const char* targetName) { // a grande busca binária
     int left = 1;
     int right = size(list);
 
