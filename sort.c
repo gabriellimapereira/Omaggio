@@ -11,23 +11,23 @@ void bubbleSort(DoublyTaskList* head) {
     if (head == NULL) return;
 
     int swapped;
-    DoublyTaskList* current;
+    DoublyTaskList* aux;
     DoublyTaskList* nextNode;
 
     do {
         swapped = 0;
-        current = head;
+        aux = head;
 
-        while (current != NULL && current->next != NULL) {
-            nextNode = current->next;
-            if (current->task->priority > nextNode->task->priority) {
+        while (aux != NULL && aux->next != NULL) {
+            nextNode = aux->next;
+            if (aux->task->priority > nextNode->task->priority) {
                 // troca as tarefas
-                Task* temp = current->task;
-                current->task = nextNode->task;
+                Task* temp = aux->task;
+                aux->task = nextNode->task;
                 nextNode->task = temp;
                 swapped = 1;
             }
-            current = current->next;
+            aux = aux->next;
         }
     } while (swapped);
 }
@@ -38,14 +38,14 @@ void bubbleSort(DoublyTaskList* head) {
 void selectionSort(DoublyTaskList* head) {
     if (head == NULL) return;
 
-    DoublyTaskList* current;
+    DoublyTaskList* aux;
     DoublyTaskList* comparator;
     DoublyTaskList* minNode;
     Task* temp;
 
-    for (current = head; current != NULL; current = current->next) {
-        minNode = current;
-        comparator = current->next;
+    for (aux = head; aux != NULL; aux = aux->next) {
+        minNode = aux;
+        comparator = aux->next;
 
         while (comparator != NULL) {
             if (comparator->task->priority < minNode->task->priority) {
@@ -54,50 +54,92 @@ void selectionSort(DoublyTaskList* head) {
             comparator = comparator->next;
         }
 
-        if (minNode != current) {
+        if (minNode != aux) {
             // troca as tarefas
-            temp = current->task;
-            current->task = minNode->task;
+            temp = aux->task;
+            aux->task = minNode->task;
             minNode->task = temp;
         }
     }
 }
 
 // ordena a lista de tarefas usando o algoritmo insertion sort
-// recebe o ponteiro para a cabeça da lista de tarefas (DoublyTaskList**)
-// não retorna valor
-void insertionSort(DoublyTaskList** head) {
-    if (*head == NULL || (*head)->next == NULL) return;
+// recebe o ponteiro para a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna o ponteiro para a nova cabeça da lista
+DoublyTaskList* insertionSort(DoublyTaskList* head) {
+    if (head == NULL || head->next == NULL) return head;
 
-    DoublyTaskList* current = (*head)->next;
-    while (current != NULL) {
-        DoublyTaskList* comparator = *head;
-        while (comparator != current && comparator->task->priority <= current->task->priority) {
+    DoublyTaskList* aux = head->next;
+    while (aux != NULL) {
+        DoublyTaskList* comparator = head;
+        
+        while (comparator != aux && comparator->task->priority <= aux->task->priority) {
             comparator = comparator->next;
         }
 
-        if (comparator != current) {
-            if (current->prev != NULL) {
-                current->prev->next = current->next;
+        if (comparator != aux) {
+            if (aux->prev != NULL) {
+                aux->prev->next = aux->next;
             }
-            if (current->next != NULL) {
-                current->next->prev = current->prev;
+            if (aux->next != NULL) {
+                aux->next->prev = aux->prev;
             }
-
-            current->next = comparator;
-            current->prev = comparator->prev;
+            aux->next = comparator;
+            aux->prev = comparator->prev;
             if (comparator->prev != NULL) {
-                comparator->prev->next = current;
+                comparator->prev->next = aux;
             }
-            comparator->prev = current;
+            comparator->prev = aux;
 
-            if (*head == comparator) {
-                *head = current;
+            if (head == comparator) {
+                head = aux;
             }
         }
 
-        current = current->next;
+        aux = aux->next;
     }
+
+    return head;
+}
+
+// ordena pelo nome da tarefa (alfabeticamente)
+// recebe o ponteiro para a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna o ponteiro para a nova cabeça da lista
+DoublyTaskList* insertionSortChar(DoublyTaskList* head) {
+    if (head == NULL || head->next == NULL) return head;
+
+    DoublyTaskList* aux = head->next;
+    while (aux != NULL) {
+        DoublyTaskList* comparator = head;
+
+        while (comparator != aux && strcmp(comparator->task->name, aux->task->name) <= 0) {
+            comparator = comparator->next;
+        }
+
+        if (comparator != aux) {
+            if (aux->prev != NULL) {
+                aux->prev->next = aux->next;
+            }
+            if (aux->next != NULL) {
+                aux->next->prev = aux->prev;
+            }
+
+            aux->next = comparator;
+            aux->prev = comparator->prev;
+            if (comparator->prev != NULL) {
+                comparator->prev->next = aux;
+            }
+            comparator->prev = aux;
+
+            if (head == comparator) {
+                head = aux;
+            }
+        }
+
+        aux = aux->next;
+    }
+
+    return head;
 }
 
 // divide a lista de tarefas em duas metades
@@ -167,15 +209,15 @@ DoublyTaskList* partition(DoublyTaskList* head, DoublyTaskList** lesser, DoublyT
     if (head == NULL) return NULL;
 
     DoublyTaskList* pivot = head;
-    DoublyTaskList* current = head->next;
+    DoublyTaskList* aux = head->next;
 
-    while (current != NULL) {
-        if (current->task->priority < pivot->task->priority) {
-            *lesser = addTaskToList_D(current->task, *lesser);  
+    while (aux != NULL) {
+        if (aux->task->priority < pivot->task->priority) {
+            *lesser = addTaskToList_D(aux->task, *lesser);  
         } else {
-            *greater = addTaskToList_D(current->task, *greater);  
+            *greater = addTaskToList_D(aux->task, *greater);  
         }
-        current = current->next;
+        aux = aux->next;
     }
 
     return pivot;  
@@ -186,11 +228,11 @@ DoublyTaskList* partition(DoublyTaskList* head, DoublyTaskList** lesser, DoublyT
 // retorna a lista concatenada (DoublyTaskList*)
 DoublyTaskList* concatenate(DoublyTaskList* lesser, DoublyTaskList* pivot, DoublyTaskList* greater) {
     if (lesser != NULL) {
-        DoublyTaskList* current = lesser;
-        while (current->next != NULL) {
-            current = current->next;
+        DoublyTaskList* aux = lesser;
+        while (aux->next != NULL) {
+            aux = aux->next;
         }
-        current->next = pivot;
+        aux->next = pivot;
     } else {
         lesser = pivot;
     }

@@ -493,28 +493,38 @@ CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTa
     CompletedTasks* newNode = allocateCircularNode();
     newNode->task = newTask;
 
+    // Caso a lista esteja vazia
     if (completedTasks == NULL) {
-        newNode->next = newNode; 
-        newNode->quant = 1; 
-        return newNode; 
+        newNode->next = newNode;  // Nó aponta para si mesmo
+        newNode->quant = 1;       // Inicializa o contador de nós
+        return newNode;
     }
 
+    // O nó inicial contém o contador correto
     CompletedTasks* temp = completedTasks;
+
+    // Navega até o último nó
     while (temp->next != completedTasks) {
-        temp = temp->next; 
+        temp = temp->next;
     }
 
-    if (temp->quant == 10) {
+    // Verifica se o limite foi atingido
+    if (completedTasks->quant == 3) { // Supondo que 3 seja o limite
         CompletedTasks* first = completedTasks;
-        completedTasks = first->next; 
-        temp->next = completedTasks; 
-        free(first); 
-        temp->quant--; 
+
+        // Remove o primeiro nó
+        completedTasks = first->next; // Atualiza a nova cabeça
+        temp->next = completedTasks;  // Atualiza o último nó para apontar para a nova cabeça
+        free(first);                  // Libera o nó antigo
+
+        completedTasks->quant = 3;    // Mantém o limite na nova cabeça
+    } else {
+        completedTasks->quant++; // Incrementa o contador na cabeça da lista
     }
 
+    // Adiciona o novo nó ao final da lista circular
     temp->next = newNode;
-    newNode->next = completedTasks; 
-    temp->quant++;
+    newNode->next = completedTasks; // O novo nó aponta para a cabeça
 
     return completedTasks;
 }
@@ -555,6 +565,32 @@ void freeCompletedTasks(CompletedTasks* completedTasks) {
     } while (aux != head);
 
     free(head); 
+}
+
+// completa uma tarefa da fila de pendentes e move para a lista de concluídas
+// recebe a fila de tarefas pendentes (PendingTasks*) e de concluídas (CompletedTasks*)
+// retorna a lista de tarefas completadas
+CompletedTasks* completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
+    if (pendingTasks->first == NULL) {
+        printf("\nnenhuma tarefa pendente para concluir!\n");
+        return completedTasks;
+    }
+
+    TaskList* taskToComplete = pendingTasks->first;
+    pendingTasks->first = pendingTasks->first->next;
+    if (pendingTasks->first == NULL) {
+        pendingTasks->last = NULL;
+    }
+
+    taskToComplete->task->status = 1; // status 1 significa concluída
+
+    completedTasks = addTaskToCircularList(taskToComplete->task, completedTasks);
+
+    printf("tarefa ""%s"" completa!\n", taskToComplete->task->name);
+
+    free(taskToComplete);
+    
+    return completedTasks;
 }
 
 // inicializa a lista de tarefas pendentes
@@ -617,30 +653,6 @@ void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pe
 
         current = current->next;
     }
-}
-
-// completa uma tarefa da fila de pendentes e move para a lista de concluídas
-// recebe a fila de tarefas pendentes (PendingTasks*) e de concluídas (CompletedTasks*)
-// não retorna valor
-void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
-    if (pendingTasks == NULL || pendingTasks->first == NULL) {
-        printf("\nnenhuma tarefa pendente para concluir!\n");
-        return;
-    }
-
-    TaskList* taskToComplete = pendingTasks->first;
-    pendingTasks->first = pendingTasks->first->next;
-    if (pendingTasks->first == NULL) {
-        pendingTasks->last = NULL;
-    }
-
-    taskToComplete->task->status = 1; // status 1 significa concluída
-
-    completedTasks = addTaskToCircularList(taskToComplete->task, completedTasks);
-
-    printf("tarefa ""%s"" completa!\n", taskToComplete->task->name);
-
-    free(taskToComplete);
 }
 
 // libera memória da fila de tarefas pendentes

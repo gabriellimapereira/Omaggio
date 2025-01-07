@@ -101,13 +101,13 @@ CompletedTasks* allocateCircularNode();
 CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks);
 void displayCompletedTasks(CompletedTasks* completedTasks);
 void freeCompletedTasks(CompletedTasks* completedTasks);
+CompletedTasks* completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 
 //funções da fila de pendentes
 PendingTasks* initializePendingTasks();
 PendingTasks* allocatePendingTasks();
 void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask);
 void displayPendingTasks(PendingTasks* pendingTasks);
-void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 void freePendingTasks(PendingTasks* pendingTasks);
 
 //busca binária de tarefa

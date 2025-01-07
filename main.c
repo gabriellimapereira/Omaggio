@@ -29,7 +29,7 @@ DoublyTaskList* sortList(DoublyTaskList* head) {
             selectionSort(head);
             break;
         case 3:
-            insertionSort(&head);
+            head = insertionSort(head);
             break;
         case 4:
             head = mergeSort(head);
@@ -92,11 +92,18 @@ void userMenu(User* currentUser) {
                 printf("tarefa registrada com sucesso!\n");
                 break;
             case 3: // ordenar a lista duplamente encadeada
-                printf("lista antes da ordenação: \n");
-                displayDoublyTaskList(currentUser->doublyTaskList);
-                currentUser->doublyTaskList = sortList(currentUser->doublyTaskList);
-                printf("lista ordenada! lista após a ordenação:\n");
-                displayDoublyTaskList(currentUser->doublyTaskList);
+                if (currentUser->doublyTaskList == NULL) {
+                    printf("lista vazia! não há como ordenar\n;");
+                    break;
+                } else if (currentUser->doublyTaskList->next == NULL) {
+                    printf("só há uma tarefa! quer ordenar o quê?");
+                } else {
+                    printf("lista antes da ordenação: \n");
+                    displayDoublyTaskList(currentUser->doublyTaskList);
+                    currentUser->doublyTaskList = sortList(currentUser->doublyTaskList);
+                    printf("lista ordenada! lista após a ordenação:\n");
+                    displayDoublyTaskList(currentUser->doublyTaskList);
+                }
                 break;
             case 4: // exibir fila de tarefas pendentes
                 displayPendingTasks(currentUser->pendingTasks);
@@ -105,10 +112,16 @@ void userMenu(User* currentUser) {
                 displayCompletedTasks(currentUser->completedTasks);
                 break;
             case 6: // completar tarefa
-                completeTask(currentUser->pendingTasks, currentUser->completedTasks);
+                currentUser->completedTasks = completeTask(currentUser->pendingTasks, currentUser->completedTasks);
                 break;
-            case 7:
-            char name[50];
+            case 7: // busca binária pelo nome
+                if (currentUser->doublyTaskList == NULL) {
+                    printf("lista vazia! não há como buscar!\n");
+                    break;
+                } 
+                currentUser->doublyTaskList = insertionSortChar(currentUser->doublyTaskList);
+                printf("a lista duplamente encadeada foi ordenada por nome para permitir a busca binária!\n");
+                char name[50];
                 printf("digite o nome da tarefa: \n");
                 setbuf(stdin, NULL);
                 scanf("%[^\n]", name);

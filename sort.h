@@ -10,7 +10,8 @@ void bubbleSort(DoublyTaskList* head);
 void selectionSort(DoublyTaskList* head);
 
 // insertion
-void insertionSort(DoublyTaskList** head);
+DoublyTaskList* insertionSort(DoublyTaskList* head);
+DoublyTaskList* insertionSortChar(DoublyTaskList* head);
 
 // merge
 DoublyTaskList* splitList(DoublyTaskList* head);
