@@ -163,26 +163,26 @@ DoublyTaskList* mergeSort(DoublyTaskList* head) {
 // particiona a lista de tarefas em duas partes baseadas no pivô
 // recebe a cabeça da lista de tarefas (DoublyTaskList*) e ponteiros para as listas menores e maiores (DoublyTaskList**)
 // retorna o pivô da partição (DoublyTaskList*)
+// Função que divide a lista com base no pivô
 DoublyTaskList* partition(DoublyTaskList* head, DoublyTaskList** lesser, DoublyTaskList** greater) {
+    if (head == NULL) return NULL;
+
     DoublyTaskList* pivot = head;
     DoublyTaskList* current = head->next;
 
-    *lesser = NULL;
-    *greater = NULL;
-
     while (current != NULL) {
-        if (current->task->priority <= pivot->task->priority) {
-            current->next = *lesser;
-            *lesser = current;
+        if (current->task->priority < pivot->task->priority) {
+            *lesser = addTaskToList_D(current->task, *lesser);  
         } else {
-            current->next = *greater;
-            *greater = current;
+            *greater = addTaskToList_D(current->task, *greater);  
         }
         current = current->next;
     }
 
-    return pivot;
+    return pivot;  
 }
+
+
 
 // concatena as listas menor, pivô e maior em uma única lista ordenada
 // recebe as listas menor, pivô e maior (DoublyTaskList*)
