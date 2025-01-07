@@ -493,38 +493,33 @@ CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTa
     CompletedTasks* newNode = allocateCircularNode();
     newNode->task = newTask;
 
-    // Caso a lista esteja vazia
     if (completedTasks == NULL) {
-        newNode->next = newNode;  // Nó aponta para si mesmo
-        newNode->quant = 1;       // Inicializa o contador de nós
+        newNode->next = newNode;  
+        newNode->quant = 1;       
         return newNode;
     }
 
-    // O nó inicial contém o contador correto
     CompletedTasks* temp = completedTasks;
 
-    // Navega até o último nó
     while (temp->next != completedTasks) {
         temp = temp->next;
     }
 
-    // Verifica se o limite foi atingido
-    if (completedTasks->quant == 3) { // Supondo que 3 seja o limite
+    if (completedTasks->quant == 10) { // limite de quantas tarefas a lista comporta
+        printf("limite de %d tarefas concluídas alcançadas! o rodízio vai apagar a primeira da lista\n", 10);
         CompletedTasks* first = completedTasks;
 
-        // Remove o primeiro nó
-        completedTasks = first->next; // Atualiza a nova cabeça
-        temp->next = completedTasks;  // Atualiza o último nó para apontar para a nova cabeça
-        free(first);                  // Libera o nó antigo
+        completedTasks = first->next; 
+        temp->next = completedTasks;  
+        free(first);                
 
-        completedTasks->quant = 3;    // Mantém o limite na nova cabeça
+        completedTasks->quant = 10;    
     } else {
-        completedTasks->quant++; // Incrementa o contador na cabeça da lista
+        completedTasks->quant++; 
     }
 
-    // Adiciona o novo nó ao final da lista circular
     temp->next = newNode;
-    newNode->next = completedTasks; // O novo nó aponta para a cabeça
+    newNode->next = completedTasks;
 
     return completedTasks;
 }
