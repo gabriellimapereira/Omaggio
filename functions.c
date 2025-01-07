@@ -243,7 +243,7 @@ Task* setterTask(Task* newTask, TaskList* taskList) {
     scanf("%[^\n]", newTask->description);
 
     while (1) {
-        printf("digite a prioridade da tarefa (1 a 5, onde 1 é a menor prioridade e 5 a maior):\n");
+        printf("digite a prioridade da tarefa (1 a 5, onde 1 é a maior prioridade e 5 a menor):\n");
         scanf("%d", &newTask->priority);
         if (newTask->priority >= 1 && newTask->priority <= 5) break;
         printf("prioridade inválida! digite um valor entre 1 e 5\n");
@@ -637,6 +637,8 @@ void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) {
     taskToComplete->task->status = 1; // status 1 significa concluída
 
     completedTasks = addTaskToCircularList(taskToComplete->task, completedTasks);
+
+    printf("tarefa ""%s"" completa!\n", taskToComplete->task->name);
 
     free(taskToComplete);
 }

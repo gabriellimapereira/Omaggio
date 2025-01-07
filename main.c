@@ -46,7 +46,7 @@ DoublyTaskList* sortList(DoublyTaskList* head) {
 }
 
 // exibe o menu de manipulação das tarefas do usuário
-// recebe o usuário atual (User*) como parâmetro
+// recebe o usuário atual (User*) 
 void userMenu(User* currentUser) { 
     system("clear");
     int userOption;
@@ -109,25 +109,25 @@ void userMenu(User* currentUser) {
                 break;
             case 7:
             char name[50];
-                printf("digite o nome do tarefa: \n");
+                printf("digite o nome da tarefa: \n");
                 setbuf(stdin, NULL);
                 scanf("%[^\n]", name);
                 DoublyTaskList* aux = binarySearchTask(currentUser->doublyTaskList, name);
                 if (aux == NULL) {
-                    printf("tarefa desaparecido! (não encontrada)\n");
+                    printf("tarefa desaparecida! (não encontrada)\n");
                 } else {
                     printf("tarefa encontrada: \n");
                     printTask(aux->task);
                 }
                 break;
             default:
-                printf("opção inválida. tente novamente! (alguma válido, de preferẽncia)\n");
+                printf("opção inválida. tente novamente! (alguma válida, de preferẽncia)\n");
         }
     } while (userOption != 0);
 }
 
 // exibe o menu principal do programa, onde o usuário pode logar, registrar e manipular usuários
-// recebe a lista de usuários (User*) como parâmetro
+// recebe a lista de usuários (User*) 
 void mainMenu(User* userList) { 
     int option;
 
