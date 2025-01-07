@@ -5,13 +5,19 @@
 #include "functions.h"
 
 // funções utilitárias
-void clearBuffer() { //limpa o buffer de entrada
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+
+// limpa o buffer de entrada (stdin)
+// não recebe parâmetros e não retorna valor
+void clearBuffer() {
+    while (getchar() != '\n'); 
 }
 
 // funções de usuário
-int checkUserId(User* userList, int id) { //verifica se o id já está sendo usado por algum usuário
+
+// verifica se o id já está sendo usado por algum usuário
+// recebe um ponteiro para a lista de usuários (User*) e um id (int)
+// retorna 0 se o id já estiver em uso, 1 caso contrário
+int checkUserId(User* userList, int id) { 
     while (userList != NULL) {
         if (id == userList->id) return 0;
         userList = userList->next;
@@ -19,7 +25,10 @@ int checkUserId(User* userList, int id) { //verifica se o id já está sendo usa
     return 1;
 }
 
-int generateRandUserId(User* userList) { //gera um id randomizado
+// gera um id de usuário aleatório
+// recebe um ponteiro para a lista de usuários (User*)
+// retorna um id único (int)
+int generateRandUserId(User* userList) { 
     int id;
     do {
         id = rand() % 10001;
@@ -27,7 +36,10 @@ int generateRandUserId(User* userList) { //gera um id randomizado
     return id;
 }
 
-User* setterUser(User* newUser, User* userList) { // captura as informações de usuário
+// captura as informações de um novo usuário
+// recebe o ponteiro para o novo usuário (User*) e para a lista de usuários (User*)
+// retorna o ponteiro para o novo usuário com os valores configurados (User*)
+User* setterUser(User* newUser, User* userList) { 
     printf("digite o nome do novo usuário: ");
     setbuf(stdin, NULL);
     scanf("%[^\n]", newUser->name);
@@ -43,7 +55,10 @@ User* setterUser(User* newUser, User* userList) { // captura as informações de
     return newUser;
 }
 
-User* allocateUser() { // aloca a memória para o usuário
+// aloca memória para um novo usuário
+// não recebe parâmetros
+// retorna o ponteiro para o novo usuário alocado (User*)
+User* allocateUser() { 
     User* newUser = (User*) malloc(sizeof(User));
     if (newUser == NULL) {
         printf("erro ao alocar memória para usuário!\n");
@@ -53,11 +68,17 @@ User* allocateUser() { // aloca a memória para o usuário
     }
 }
 
-User* initializeUserList() { // inicializa a lista
+// inicializa a lista de usuários
+// não recebe parâmetros
+// retorna um ponteiro nulo (User*)
+User* initializeUserList() { 
     return NULL;
 }
 
-User* getUserById(User* userList, int key) { // procura o usuário na lista
+// procura um usuário na lista pelo id
+// recebe a lista de usuários (User*) e a chave de busca (int)
+// retorna o ponteiro para o usuário encontrado ou null se não encontrar (User*)
+User* getUserById(User* userList, int key) { 
     if (userList == NULL) {
         printf("sem usuários no sistema!\n");
         return NULL;
@@ -75,7 +96,10 @@ User* getUserById(User* userList, int key) { // procura o usuário na lista
     return NULL;
 }
 
-User* getLastUser(User* userList) { // acha o final da lista
+// obtém o último usuário da lista
+// recebe a lista de usuários (User*)
+// retorna o ponteiro para o último usuário da lista (User*)
+User* getLastUser(User* userList) { 
     if (userList == NULL || userList->next == NULL) return userList;
 
     User* aux = userList;
@@ -83,7 +107,10 @@ User* getLastUser(User* userList) { // acha o final da lista
     return aux;
 }
 
-User* addUser(User* userList) { // insere usuário
+// insere um novo usuário na lista
+// recebe a lista de usuários (User*)
+// retorna a lista de usuários atualizada (User*)
+User* addUser(User* userList) { 
     User* newUser = allocateUser();
     newUser = setterUser(newUser, userList);
 
@@ -105,7 +132,10 @@ User* addUser(User* userList) { // insere usuário
     return userList;
 }
 
-void displayUserList(User* userList) { // exibe a lista
+// exibe a lista de usuários
+// recebe um ponteiro para a lista de usuários (User*)
+// não retorna valor
+void displayUserList(User* userList) { 
     if (userList == NULL) {
         printf("sem usuários cadastrados!\n");
         return;
@@ -118,10 +148,16 @@ void displayUserList(User* userList) { // exibe a lista
     }
 }
 
-void displayUser(User* user) { // exibe uuário
+// exibe um usuário
+// recebe um ponteiro para o usuário (User*)
+// não retorna valor
+void displayUser(User* user) {
     printf("usuário: %s\nid: %d\n\n", user->name, user->id);
 }
 
+// remove um usuário da lista pelo id
+// recebe a lista de usuários (User*) e o id (int)
+// retorna a lista de usuários atualizada (User*)
 User* deleteUser(User* userList, int key) {
     if (userList == NULL) {
         printf("lista vazia!\n");
@@ -156,17 +192,24 @@ User* deleteUser(User* userList, int key) {
 }
 
 // funções de tarefas
+
+// aloca uma nova tarefa
+// não recebe parâmetros
+// retorna um ponteiro para a nova tarefa (Task*)
 Task* allocateTask() { // aloca a tarefa
     Task* newTask = (Task*) malloc(sizeof(Task));
     if (newTask == NULL) {
-        printf("erro ao alocar memória!\n");
+        printf("erro ao alocar memória para tarefa!\n");
         exit(1);
     } else {
         return newTask;
     }
 }
 
-int checkTaskId(TaskList* taskList, int id) { // verifica se o id é valido
+// verifica se o id da tarefa é válido
+// recebe a lista de tarefas (TaskList*) e o id (int)
+// retorna 0 se o id já existir, 1 caso contrário
+int checkTaskId(TaskList* taskList, int id) { 
     while (taskList != NULL) {
         if (id == taskList->task->id) return 0;
         taskList = taskList->next;
@@ -174,7 +217,10 @@ int checkTaskId(TaskList* taskList, int id) { // verifica se o id é valido
     return 1;
 }
 
-int generateRandTaskId(TaskList* taskList) { // gera um id de tarefa aleatório
+// gera um id aleatório para a tarefa
+// recebe a lista de tarefas (TaskList*)
+// retorna um id único (int)
+int generateRandTaskId(TaskList* taskList) { 
     int id;
     do {
         id = rand() % 10001;
@@ -182,7 +228,10 @@ int generateRandTaskId(TaskList* taskList) { // gera um id de tarefa aleatório
     return id;
 }
 
-Task* setterTask(Task* newTask, TaskList* taskList) { // captura as informações de usuário
+// define as propriedades de uma nova tarefa
+// recebe o ponteiro para a tarefa (Task*) e a lista de tarefas (TaskList*)
+// retorna o ponteiro para a tarefa configurada (Task*)
+Task* setterTask(Task* newTask, TaskList* taskList) {
     printf("digite o nome da tarefa:\n");
     setbuf(stdin, NULL);
     scanf("%[^\n]", newTask->name);
@@ -192,7 +241,7 @@ Task* setterTask(Task* newTask, TaskList* taskList) { // captura as informaçõe
     scanf("%[^\n]", newTask->description);
 
     while (1) {
-        printf("digite a prioridade da tarefa (1 a 5):\n");
+        printf("digite a prioridade da tarefa (1 a 5, onde 1 é a menor prioridade e 5 a maior):\n");
         scanf("%d", &newTask->priority);
         if (newTask->priority >= 1 && newTask->priority <= 5) break;
         printf("prioridade inválida! digite um valor entre 1 e 5\n");
@@ -210,6 +259,9 @@ Task* setterTask(Task* newTask, TaskList* taskList) { // captura as informaçõe
     return newTask;
 }
 
+// exibe os detalhes de uma tarefa
+// recebe o ponteiro para a tarefa (Task*)
+// não retorna valor
 void printTask(Task* task) {
     if (task == NULL) {
         printf("tarefa inválida.\n");
@@ -225,21 +277,31 @@ void printTask(Task* task) {
 }
 
 // funções das listas de tarefas
-TaskList* initializeTaskList() { // inicializa a lista de tarefas
+
+// inicializa uma lista de tarefas
+// não recebe parâmetros
+// retorna um ponteiro nulo (TaskList*)
+TaskList* initializeTaskList() { 
     return NULL;
 }
 
-TaskList* allocateTaskNode() { // cria um nó de lista de tarefas
+// aloca um nó de lista de tarefas
+// não recebe parâmetros
+// retorna o ponteiro para o nó alocado (TaskList*)
+TaskList* allocateTaskNode() { 
     TaskList* newNode = (TaskList*) malloc(sizeof(TaskList));
     if (newNode == NULL) {
-        printf("erro ao alocar memória!\n");
+        printf("erro ao alocar memória para a lista de tarefas!\n");
         exit(1);
     } else {
         return newNode;
     }
 }
 
-TaskList* getTaskById(TaskList* taskList, int key) { // procura uma tarefa pelo id
+// busca uma tarefa pelo id na lista
+// recebe a lista de tarefas (TaskList*) e o id (int)
+// retorna o nó encontrado ou null (TaskList*)
+TaskList* getTaskById(TaskList* taskList, int key) { 
     TaskList* aux = taskList;
     while (aux != NULL) {
         if (aux->task != NULL && aux->task->id == key) {
@@ -249,10 +311,13 @@ TaskList* getTaskById(TaskList* taskList, int key) { // procura uma tarefa pelo 
     }
 
     printf("tarefa não encontrada!\n");
-    return NULL; // Retorna NULL se não encontrar
+    return NULL; 
 }
 
-TaskList* getLastTaskNode(TaskList* taskList) { // retorna o último nó
+// obtém o último nó de uma lista de tarefas
+// recebe a lista de tarefas (TaskList*)
+// retorna o ponteiro para o último nó (TaskList*)
+TaskList* getLastTaskNode(TaskList* taskList) { 
     if (taskList == NULL) return NULL;
 
     TaskList* aux = taskList;
@@ -262,7 +327,10 @@ TaskList* getLastTaskNode(TaskList* taskList) { // retorna o último nó
     return aux; 
 }
 
-TaskList* addTaskToList(Task* newTask, TaskList* taskList) { // adiciona tarefa à lista
+// adiciona uma nova tarefa à lista
+// recebe a tarefa (Task*) e a lista de tarefas (TaskList*)
+// retorna a lista de tarefas atualizada (TaskList*)
+TaskList* addTaskToList(Task* newTask, TaskList* taskList) { 
     TaskList* newNode = allocateTaskNode();
     newNode->task = newTask;
 
@@ -275,11 +343,11 @@ TaskList* addTaskToList(Task* newTask, TaskList* taskList) { // adiciona tarefa 
     }
 }
 
-void displayTaskListRecursive(TaskList* taskList) { // exibe a lista recursivamente
-    if (taskList == NULL) {
-        printf("lista vazia!\n");
-        return;
-    }
+// exibe a lista de tarefas recursivamente
+// recebe a lista de tarefas (TaskList*)
+// não retorna valor
+void displayTaskListRecursive(TaskList* taskList) { 
+    if (taskList == NULL) return;
 
     if (taskList->task == NULL) {
         printf("lista vazia!\n");
@@ -291,6 +359,9 @@ void displayTaskListRecursive(TaskList* taskList) { // exibe a lista recursivame
     displayTaskListRecursive(taskList->next);
 }
 
+// libera memória da lista de tarefas
+// recebe a lista de tarefas (TaskList*)
+// não retorna valor
 void freeTaskList(TaskList* taskList) {
     while (taskList != NULL) {
         TaskList* next = taskList->next;
@@ -298,25 +369,34 @@ void freeTaskList(TaskList* taskList) {
         free(taskList);
         taskList = next; 
     }
-    printf("free da lista normal ok\n");
 }
 
 //funções da lista de tarefas duplamente encadeada
-DoublyTaskList* initializeDoublyTaskList() { // inicializa a lista dupla de tarefas
+
+// inicializa uma lista duplamente encadeada de tarefas
+// não recebe parâmetros
+// retorna um ponteiro nulo (DoublyTaskList*)
+DoublyTaskList* initializeDoublyTaskList() { 
     return NULL;
 }
 
-DoublyTaskList* allocateTaskNode_D() { // cria um nó de lista de tarefas
+// aloca um nó para a lista duplamente encadeada de tarefas
+// não recebe parâmetros
+// retorna o ponteiro para o nó alocado (DoublyTaskList*)
+DoublyTaskList* allocateTaskNode_D() { 
     DoublyTaskList* newNode = (DoublyTaskList*) malloc(sizeof(DoublyTaskList));
     if (newNode == NULL) {
-        printf("erro ao alocar memória!\n");
+        printf("erro ao alocar memória para o nó da lista de tarefa duplamente encadeada!\n");
         exit(1);
     } else {
         return newNode;
     }
 }
 
-DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList) { // encontra o final da lista dupla
+// busca o último nó de uma lista duplamente encadeada
+// recebe a lista de tarefas (DoublyTaskList*)
+// retorna o ponteiro para o último nó (DoublyTaskList*)
+DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList) { 
     if (taskList == NULL || taskList->next == NULL) return taskList;
 
     DoublyTaskList* aux = taskList;
@@ -324,7 +404,10 @@ DoublyTaskList* getLastTaskNode_D(DoublyTaskList* taskList) { // encontra o fina
     return aux;
 }
 
-DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList) { // insere a tarefa na lista dupla
+// adiciona uma nova tarefa à lista duplamente encadeada
+// recebe a tarefa (Task*) e a lista (DoublyTaskList*)
+// retorna a lista de tarefas atualizada (DoublyTaskList*)
+DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList) { 
     DoublyTaskList* newNode = allocateTaskNode_D();
     newNode->task = newTask;
 
@@ -346,7 +429,10 @@ DoublyTaskList* addTaskToList_D(Task* newTask, DoublyTaskList* taskList) { // in
     return taskList;
 }
 
-void displayDoublyTaskList(DoublyTaskList* taskList) { // exibe a lista de tarefas dupla
+// exibe a lista de tarefas duplamente encadeada
+// recebe a lista de tarefas (DoublyTaskList*)
+// não retorna valor
+void displayDoublyTaskList(DoublyTaskList* taskList) { 
     if (taskList == NULL) {
         printf("não há tarefas na lista\n");
         return;
@@ -362,6 +448,9 @@ void displayDoublyTaskList(DoublyTaskList* taskList) { // exibe a lista de taref
     }
 }
 
+// libera memória da lista de tarefas duplamente encadeada
+// recebe a lista de tarefas (DoublyTaskList*)
+// não retorna valor
 void freeDoublyTaskList(DoublyTaskList* doublyTaskList) {
     while (doublyTaskList != NULL) {
         DoublyTaskList* next = doublyTaskList->next;
@@ -373,14 +462,21 @@ void freeDoublyTaskList(DoublyTaskList* doublyTaskList) {
 }
 
 //funções da lista de concluídas
-CompletedTasks* initializeCompletedTasks() { // função clichẽ de inicialização
+
+// inicializa a lista de tarefas concluídas
+// não recebe parâmetros
+// retorna um ponteiro nulo (CompletedTasks*)
+CompletedTasks* initializeCompletedTasks() { 
     return NULL;
 }
 
-CompletedTasks* allocateCircularNode() { // aloca o nó da circular
+// aloca o nó da lista circular de tarefas concluídas
+// não recebe parâmetros
+// retorna o ponteiro para o nó alocado (CompletedTasks*)
+CompletedTasks* allocateCircularNode() {
     CompletedTasks* newNode = (CompletedTasks*)malloc(sizeof(CompletedTasks));
     if (newNode == NULL) {
-        printf("erro ao alocar memória para a nova tarefa.\n");
+        printf("erro ao alocar memória para o nó da lista de tarefas completadas!\n");
         exit(1);
     }
     newNode->task = NULL;
@@ -389,7 +485,10 @@ CompletedTasks* allocateCircularNode() { // aloca o nó da circular
     return newNode;
 }
 
-CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks) { // função para adicionar uma tarefa à lista circular de tarefas concluídas
+// adiciona uma nova tarefa à lista circular de tarefas concluídas
+// recebe a tarefa (Task*) e a lista de tarefas concluídas (CompletedTasks*)
+// retorna a lista de tarefas concluídas atualizada (CompletedTasks*)
+CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTasks) { 
     CompletedTasks* newNode = allocateCircularNode();
     newNode->task = newTask;
 
@@ -419,9 +518,12 @@ CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTa
     return completedTasks;
 }
 
-void displayCompletedTasks(CompletedTasks* completedTasks) { // exibe as tarefas cumpridas
+// exibe a lista de tarefas concluídas
+// recebe a lista de tarefas concluídas (CompletedTasks*)
+// não retorna valor
+void displayCompletedTasks(CompletedTasks* completedTasks) { 
     if (completedTasks == NULL) {
-        printf("\nNenhuma tarefa concluída.\n");
+        printf("\nnenhuma tarefa concluída!\n");
         return;
     }
 
@@ -434,7 +536,10 @@ void displayCompletedTasks(CompletedTasks* completedTasks) { // exibe as tarefas
     } while (aux != completedTasks); 
 }
 
-void freeCompletedTasks(CompletedTasks* completedTasks) { // free da lista de tarefas completas
+// libera memória da lista de tarefas concluídas
+// recebe a lista de tarefas concluídas (CompletedTasks*)
+// não retorna valor
+void freeCompletedTasks(CompletedTasks* completedTasks) { 
     if (completedTasks == NULL) {
         return; 
     }
@@ -451,15 +556,20 @@ void freeCompletedTasks(CompletedTasks* completedTasks) { // free da lista de ta
     free(head); 
 }
 
-//funções da lista de pendentes
-PendingTasks* initializePendingTasks() { // preciso comentar?
+// inicializa a lista de tarefas pendentes
+// não recebe parâmetros
+// retorna um ponteiro nulo (PendingTasks*)
+PendingTasks* initializePendingTasks() { 
     return NULL;
 }
 
-PendingTasks* allocatePendingTasks() { // aloca a fila de tarefas
+// aloca a fila de tarefas pendentes
+// não recebe parâmetros
+// retorna o ponteiro para a fila alocada (PendingTasks*)
+PendingTasks* allocatePendingTasks() { 
     PendingTasks* newPendingTasks = (PendingTasks*)malloc(sizeof(PendingTasks));
     if (newPendingTasks == NULL) {
-        printf("Erro ao alocar memória para a lista de tarefas pendentes.\n");
+        printf("erro ao alocar memória para a lista de tarefas pendentes!\n");
         exit(1);
     }
     newPendingTasks->first = NULL;
@@ -467,7 +577,10 @@ PendingTasks* allocatePendingTasks() { // aloca a fila de tarefas
     return newPendingTasks;
 }
 
-void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask) { // inserção na lista de tarefass
+// insere uma nova tarefa na fila de tarefas pendentes
+// recebe a fila de tarefas pendentes (PendingTasks*) e a tarefa (Task*)
+// não retorna valor
+void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask) { 
     TaskList* newNode = allocateTaskNode();
     newNode->task = newTask;
 
@@ -482,9 +595,12 @@ void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask) { // i
     }
 }
 
+// exibe a lista de tarefas pendentes
+// recebe a lista de tarefas pendentes (PendingTasks*)
+// não retorna valor
 void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pendẽncias
     if (pendingTasks == NULL || pendingTasks->first == NULL) {
-        printf("\nnão há tarefas pendentes para listar.\n");
+        printf("\nnão há tarefas pendentes para listar!\n");
         return;
     }
 
@@ -502,7 +618,10 @@ void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pe
     }
 }
 
-void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { // "completa" uma tarefa
+// completa uma tarefa da fila de pendentes e move para a lista de concluídas
+// recebe a fila de tarefas pendentes (PendingTasks*) e de concluídas (CompletedTasks*)
+// não retorna valor
+void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
     if (pendingTasks == NULL || pendingTasks->first == NULL) {
         printf("\nnenhuma tarefa pendente para concluir!\n");
         return;
@@ -521,7 +640,10 @@ void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks) { 
     free(taskToComplete);
 }
 
-void freePendingTasks(PendingTasks* pendingTasks) { // free da fila de pendentes
+// libera memória da fila de tarefas pendentes
+// recebe a fila de tarefas pendentes (PendingTasks*)
+// não retorna valor
+void freePendingTasks(PendingTasks* pendingTasks) { 
     if (pendingTasks == NULL) {
         return;
     }
@@ -533,16 +655,12 @@ void freePendingTasks(PendingTasks* pendingTasks) { // free da fila de pendentes
         free(aux); 
         aux = next; 
     }
-
 }
 
-//funções da pilha de reversão
-UndoStack* initializeUndoStack() { // inicializa a pilha de reversão
-    return NULL;
-}
-
-//busca binária
-int size(User* list) { // retorna o tamanho da lista
+// retorna o tamanho da lista de usuários
+// recebe a lista de usuários (User*)
+// retorna o tamanho (int)
+int size(User* list) { 
     int count = 0;
     User* aux = list;
     while (aux != NULL) {
@@ -552,6 +670,9 @@ int size(User* list) { // retorna o tamanho da lista
     return count;
 }
 
+// retorna o usuário no índice especificado da lista
+// recebe a lista de usuários (User*) e o índice (int)
+// retorna o ponteiro para o usuário (User*)
 User* getUserAtIndex(User* list, int index) {
     User* aux = list;
     int count = 0;
@@ -562,6 +683,9 @@ User* getUserAtIndex(User* list, int index) {
     return aux; 
 }
 
+// realiza a busca binária por nome na lista de usuários
+// recebe a lista de usuários (User*) e o nome alvo (const char*)
+// retorna o ponteiro para o usuário encontrado (User*) ou NULL
 User* binarySearchUser (User* list, const char* targetName) { // a grande busca binária
     int left = 1;
     int right = size(list);

@@ -5,7 +5,10 @@
 #include "functions.h"
 #include "sort.h"
 
-DoublyTaskList* sortList(DoublyTaskList* head) {
+// exibe o menu para escolha do algoritmo de ordenação e aplica o algoritmo escolhido
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna a cabeça da lista de tarefas ordenada (DoublyTaskList*)
+DoublyTaskList* sortList(DoublyTaskList* head) { 
     int choice;
 
     printf("\n--- escolha um algoritmo de ordenação ---\n");
@@ -15,7 +18,7 @@ DoublyTaskList* sortList(DoublyTaskList* head) {
     printf("4. merge sort\n");
     printf("5. quick sort\n");
     printf("-----------------------------------------\n");
-    printf("digite o número do algoritmo desejado: ");
+    printf("digite o número do método desejado: ");
     scanf("%d", &choice);
 
     switch (choice) {
@@ -35,14 +38,16 @@ DoublyTaskList* sortList(DoublyTaskList* head) {
             head = quickSort(head);
             break;
         default:
-            printf("escolha inválida! nenhuma alteração foi feita. escolha algo válido! :/\n");
+            printf("escolha inválida! nenhuma alteração foi feita. escolha algum válido! :/\n");
             break;
     }
 
     return head;
 }
 
-void userMenu(User* currentUser) {
+// exibe o menu de manipulação das tarefas do usuário
+// recebe o usuário atual (User*) como parâmetro
+void userMenu(User* currentUser) { 
     system("clear");
     int userOption;
 
@@ -63,10 +68,14 @@ void userMenu(User* currentUser) {
         switch (userOption) {
             case 0:
                 break;
-            case 1:
-                displayTaskListRecursive(currentUser->taskList);
+            case 1: //exibir lista de forma recursiva
+                if (currentUser->taskList == NULL) {
+                    printf("lista vazia!\n");
+                } else {
+                    displayTaskListRecursive(currentUser->taskList);
+                }
                 break;
-            case 2: {
+            case 2: // inserir nova tarefa
                 Task* newTask = allocateTask();
                 newTask = setterTask(newTask, currentUser->taskList);
                 if (newTask->status == 1) {
@@ -81,30 +90,31 @@ void userMenu(User* currentUser) {
                 currentUser->doublyTaskList = addTaskToList_D(newTask, currentUser->doublyTaskList);
                 printf("tarefa registrada com sucesso!\n");
                 break;
-            }
-            case 3:
+            case 3: // ordenar a lista duplamente encadeada
                 printf("lista antes da ordenação: \n");
                 displayDoublyTaskList(currentUser->doublyTaskList);
                 currentUser->doublyTaskList = sortList(currentUser->doublyTaskList);
                 printf("lista ordenada! lista após a ordenação:\n");
                 displayDoublyTaskList(currentUser->doublyTaskList);
                 break;
-            case 4:
+            case 4: // exibir fila de tarefas pendentes
                 displayPendingTasks(currentUser->pendingTasks);
                 break;
-            case 5:
+            case 5: // exibir lista de tarefas completas
                 displayCompletedTasks(currentUser->completedTasks);
                 break;
-            case 6:
+            case 6: // completar tarefa
                 completeTask(currentUser->pendingTasks, currentUser->completedTasks);
                 break;
             default:
-                printf("opção inválida. tente novamente.\n");
+                printf("opção inválida. tente novamente! (algo válido, de preferẽncia!)\n");
         }
     } while (userOption != 0);
 }
 
-void mainMenu(User* userList) {
+// exibe o menu principal do programa, onde o usuário pode logar, registrar e manipular usuários
+// recebe a lista de usuários (User*) como parâmetro
+void mainMenu(User* userList) { 
     int option;
 
     do {
@@ -121,43 +131,43 @@ void mainMenu(User* userList) {
         clearBuffer();
 
         switch (option) {
-            case 0:
+            case 0: // saída do programa
                 printf("saindo do programa...\n");
                 break;
-            case 1: {
+            case 1:  // logar como usuário
                 int id;
                 printf("digite o id do usuário: ");
                 scanf("%d", &id);
                 clearBuffer();
                 User* currentUser = getUserById(userList, id);
                 if (currentUser) {
-                    printf("usuário '%s' logado com sucesso.\n", currentUser->name);
+                    printf("usuário '%s' logado com sucesso\n", currentUser->name);
                     userMenu(currentUser);
                 } else {
-                    printf("id não encontrado. tente novamente.\n");
+                    printf("usuário finado (id não encontrado). tente novamente!\n");
                 }
                 break;
-            }
-            case 2:
+            case 2: // exibe a lista de usuários
                 displayUserList(userList);
                 break;
             case 3:
+                // adiciona novo usuário
                 userList = addUser(userList);
                 break;
-            case 4: 
+            case 4: // deleta um usuário
                 int key;
                 printf("digite o id do usuário: ");
                 scanf("%d", &key);
                 userList = deleteUser(userList, key);
                 break;
-            case 5:
+            case 5: // procura por um determinado usuário através do seu nome
                 char name[50];
                 printf("digite o nome do usuário: \n");
                 setbuf(stdin, NULL);
                 scanf("%[^\n]", name);
                 User* aux = binarySearchUser(userList, name);
                 if (aux == NULL) {
-                    printf("usuaŕio não encontrado!\n");
+                    printf("usuaŕio desaparecido! (não encontrado)\n");
                 } else {
                     printf("usuário encontrado: \n");
                     displayUser(aux);
@@ -169,9 +179,10 @@ void mainMenu(User* userList) {
     } while (option != 0);
 }
 
+// main
 int main() {
-    srand(time(NULL));
-    User* userList = NULL;
-    mainMenu(userList);
+    srand(time(NULL)); // geração da semente para randomização
+    User* userList = initializeUserList(); // inicialização da lsita de usuário
+    mainMenu(userList); // chama o menu principal (agora é só ser feliz)
     return 0;
 }

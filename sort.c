@@ -4,7 +4,9 @@
 #include "sort.h"
 #include "functions.h"
 
-//bubble
+// ordena a lista de tarefas usando o algoritmo bubble sort
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// não retorna valor
 void bubbleSort(DoublyTaskList* head) {
     if (head == NULL) return;
 
@@ -19,7 +21,7 @@ void bubbleSort(DoublyTaskList* head) {
         while (current != NULL && current->next != NULL) {
             nextNode = current->next;
             if (current->task->priority > nextNode->task->priority) {
-                // Swap tasks
+                // troca as tarefas
                 Task* temp = current->task;
                 current->task = nextNode->task;
                 nextNode->task = temp;
@@ -30,7 +32,9 @@ void bubbleSort(DoublyTaskList* head) {
     } while (swapped);
 }
 
-// selection
+// ordena a lista de tarefas usando o algoritmo selection sort
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// não retorna valor
 void selectionSort(DoublyTaskList* head) {
     if (head == NULL) return;
 
@@ -51,7 +55,7 @@ void selectionSort(DoublyTaskList* head) {
         }
 
         if (minNode != current) {
-            // Swap tasks
+            // troca as tarefas
             temp = current->task;
             current->task = minNode->task;
             minNode->task = temp;
@@ -59,7 +63,9 @@ void selectionSort(DoublyTaskList* head) {
     }
 }
 
-// insertion
+// ordena a lista de tarefas usando o algoritmo insertion sort
+// recebe o ponteiro para a cabeça da lista de tarefas (DoublyTaskList**)
+// não retorna valor
 void insertionSort(DoublyTaskList** head) {
     if (*head == NULL || (*head)->next == NULL) return;
 
@@ -94,7 +100,9 @@ void insertionSort(DoublyTaskList** head) {
     }
 }
 
-// merge
+// divide a lista de tarefas em duas metades
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna a segunda metade da lista (DoublyTaskList*)
 DoublyTaskList* splitList(DoublyTaskList* head) {
     if (head == NULL || head->next == NULL) return head;
 
@@ -114,6 +122,9 @@ DoublyTaskList* splitList(DoublyTaskList* head) {
     return secondHalf;
 }
 
+// mescla duas listas de tarefas ordenadas
+// recebe duas listas de tarefas (DoublyTaskList*)
+// retorna a lista mesclada e ordenada (DoublyTaskList*)
 DoublyTaskList* mergeLists(DoublyTaskList* list1, DoublyTaskList* list2) {
     if (list1 == NULL) return list2;
     if (list2 == NULL) return list1;
@@ -135,6 +146,9 @@ DoublyTaskList* mergeLists(DoublyTaskList* list1, DoublyTaskList* list2) {
     }
 }
 
+// ordena a lista de tarefas usando o algoritmo merge sort
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna a lista ordenada (DoublyTaskList*)
 DoublyTaskList* mergeSort(DoublyTaskList* head) {
     if (head == NULL || head->next == NULL) return head;
 
@@ -146,7 +160,9 @@ DoublyTaskList* mergeSort(DoublyTaskList* head) {
     return mergeLists(head, secondHalf);
 }
 
-// quick
+// particiona a lista de tarefas em duas partes baseadas no pivô
+// recebe a cabeça da lista de tarefas (DoublyTaskList*) e ponteiros para as listas menores e maiores (DoublyTaskList**)
+// retorna o pivô da partição (DoublyTaskList*)
 DoublyTaskList* partition(DoublyTaskList* head, DoublyTaskList** lesser, DoublyTaskList** greater) {
     DoublyTaskList* pivot = head;
     DoublyTaskList* current = head->next;
@@ -168,6 +184,9 @@ DoublyTaskList* partition(DoublyTaskList* head, DoublyTaskList** lesser, DoublyT
     return pivot;
 }
 
+// concatena as listas menor, pivô e maior em uma única lista ordenada
+// recebe as listas menor, pivô e maior (DoublyTaskList*)
+// retorna a lista concatenada (DoublyTaskList*)
 DoublyTaskList* concatenate(DoublyTaskList* lesser, DoublyTaskList* pivot, DoublyTaskList* greater) {
     if (lesser != NULL) {
         DoublyTaskList* current = lesser;
@@ -182,6 +201,9 @@ DoublyTaskList* concatenate(DoublyTaskList* lesser, DoublyTaskList* pivot, Doubl
     return lesser;
 }
 
+// ordena a lista de tarefas usando o algoritmo quick sort
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// retorna a lista ordenada (DoublyTaskList*)
 DoublyTaskList* quickSort(DoublyTaskList* head) {
     if (head == NULL || head->next == NULL) return head;
 

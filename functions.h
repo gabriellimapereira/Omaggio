@@ -1,6 +1,8 @@
 #ifndef FUNCTIONS
 #define FUNCTIONS
 
+// estruturas 
+// estrutura de tarefa com seus atributos
 typedef struct Task {
     int id;
     char name[50];
@@ -9,32 +11,38 @@ typedef struct Task {
     int status;
 } Task;
 
+// estrutura da lista de tarefa principal
 typedef struct TaskList {
     Task* task;
     struct TaskList* next;
 } TaskList;
 
+// estrutura da lista de tarefas concluídas (circular)
 typedef struct CompletedTasks {
     Task* task;
     struct CompletedTasks* next;
     int quant;
 } CompletedTasks;
 
+// estrutura da lista de tarefas duplamente encadeada
 typedef struct DoublyTaskList {
     Task* task;
     struct DoublyTaskList* next;
     struct DoublyTaskList* prev;
 } DoublyTaskList;
 
+// estrutura da fila de tarefas pendentes
 typedef struct PendingTasks {
     TaskList* first;
     TaskList* last;
 } PendingTasks;
 
+// estrutura da pilha de reversão
 typedef struct UndoStack {
     struct User* top;
 } UndoStack;
 
+// estrutura do usuário
 typedef struct User {
     char name[50];
     int id;
@@ -47,7 +55,7 @@ typedef struct User {
     UndoStack* history;
 } User;
 
-// funções utilitárias
+//funções utilitárias
 void clearBuffer();
 
 //funções de usuário
@@ -94,16 +102,13 @@ CompletedTasks* addTaskToCircularList(Task* newTask, CompletedTasks* completedTa
 void displayCompletedTasks(CompletedTasks* completedTasks);
 void freeCompletedTasks(CompletedTasks* completedTasks);
 
-//funções da lista de pendentes
+//funções da fila de pendentes
 PendingTasks* initializePendingTasks();
 PendingTasks* allocatePendingTasks();
 void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask);
 void displayPendingTasks(PendingTasks* pendingTasks);
 void completeTask(PendingTasks* pendingTasks, CompletedTasks* completedTasks);
 void freePendingTasks(PendingTasks* pendingTasks);
-
-//funções da pilha de reversão
-UndoStack* initializeUndoStack();
 
 //busca binária de usuário
 int size(User* list);
