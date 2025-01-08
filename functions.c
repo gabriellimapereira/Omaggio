@@ -198,7 +198,7 @@ User* deleteUser(User* userList, int key) {
 // aloca uma nova tarefa
 // não recebe parâmetros
 // retorna um ponteiro para a nova tarefa (Task*)
-Task* allocateTask() { // aloca a tarefa
+Task* allocateTask() { 
     Task* newTask = (Task*) malloc(sizeof(Task));
     if (newTask == NULL) {
         printf("erro ao alocar memória para tarefa!\n");
@@ -245,6 +245,7 @@ Task* setterTask(Task* newTask, TaskList* taskList) {
     while (1) {
         printf("digite a prioridade da tarefa (1 a 5, onde 1 é a maior prioridade e 5 a menor):\n");
         scanf("%d", &newTask->priority);
+        while(getchar() != '\n');
         if (newTask->priority >= 1 && newTask->priority <= 5) break;
         printf("prioridade inválida! digite um valor entre 1 e 5\n");
     }
@@ -252,6 +253,7 @@ Task* setterTask(Task* newTask, TaskList* taskList) {
     while (1) {
         printf("digite o status da tarefa (0 para pendente, 1 para concluída):\n");
         scanf("%d", &newTask->status);
+        while(getchar() != '\n');
         if (newTask->status == 0 || newTask->status == 1) break;
         printf("status inválido! digite 0 ou 1\n");
     }
@@ -361,17 +363,23 @@ void displayTaskListRecursive(TaskList* taskList) {
     displayTaskListRecursive(taskList->next);
 }
 
-// libera memória da lista de tarefas
+// libera memória da lista de tarefas e das tarefas presentes no sistema
 // recebe a lista de tarefas (TaskList*)
 // não retorna valor
 void freeTaskList(TaskList* taskList) {
     while (taskList != NULL) {
         TaskList* next = taskList->next;
-        free(taskList->task); 
+
+        if (taskList->task != NULL) {
+            free(taskList->task);
+            taskList->task = NULL; 
+        }
+
         free(taskList);
-        taskList = next; 
+        taskList = next;
     }
 }
+
 
 //funções da lista de tarefas duplamente encadeada
 
@@ -457,9 +465,8 @@ void freeDoublyTaskList(DoublyTaskList* doublyTaskList) {
     while (doublyTaskList != NULL) {
         DoublyTaskList* next = doublyTaskList->next;
         free(doublyTaskList);
-        doublyTaskList = next; 
+        doublyTaskList = next;
     }
-
 }
 
 //funções da lista de concluídas
@@ -545,21 +552,21 @@ void displayCompletedTasks(CompletedTasks* completedTasks) {
 // libera memória da lista de tarefas concluídas
 // recebe a lista de tarefas concluídas (CompletedTasks*)
 // não retorna valor
-void freeCompletedTasks(CompletedTasks* completedTasks) { 
+void freeCompletedTasks(CompletedTasks* completedTasks) {
     if (completedTasks == NULL) {
         return; 
     }
 
-    CompletedTasks* aux = completedTasks;
-    CompletedTasks* head = completedTasks;
+    CompletedTasks* aux = completedTasks->next; 
+    CompletedTasks* head = completedTasks;    
 
-    do {
+    while (aux != head) { 
         CompletedTasks* next = aux->next; 
         free(aux);
         aux = next; 
-    } while (aux != head);
+    }
 
-    free(head); 
+    free(head);
 }
 
 // completa uma tarefa da fila de pendentes e move para a lista de concluídas
@@ -630,7 +637,7 @@ void insertTaskIntoPendingList(PendingTasks* pendingTasks, Task* newTask) {
 // exibe a lista de tarefas pendentes
 // recebe a lista de tarefas pendentes (PendingTasks*)
 // não retorna valor
-void displayPendingTasks(PendingTasks* pendingTasks) { // listagem da fila de pendẽncias
+void displayPendingTasks(PendingTasks* pendingTasks) { 
     if (pendingTasks == NULL || pendingTasks->first == NULL) {
         printf("\nnão há tarefas pendentes para listar!\n");
         return;
@@ -711,13 +718,13 @@ DoublyTaskList* binarySearchTask(DoublyTaskList* list, const char* targetName) {
         int comparison = strcmp(midNode->task->name, targetName);
 
         if (comparison == 0) {
-            return midNode;  // tarefa encontrada
+            return midNode;  
         } else if (comparison < 0) {
-            left = mid + 1;  // busca na metade direita
+            left = mid + 1;  
         } else {
-            right = mid - 1;  // busca na metade esquerda
+            right = mid - 1;  
         }
     }
 
-    return NULL;  // tarefa não encontrada
+    return NULL;  
 }
