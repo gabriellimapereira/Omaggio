@@ -93,7 +93,7 @@ void userMenu(User* currentUser) {
                 break;
             case 3: // ordenar a lista duplamente encadeada
                 if (currentUser->doublyTaskList == NULL) {
-                    printf("lista vazia! não há como ordenar\n;");
+                    printf("lista vazia! não há como ordenar\n");
                     break;
                 } else if (currentUser->doublyTaskList->next == NULL) {
                     printf("só há uma tarefa! quer ordenar o quê?");
@@ -112,6 +112,10 @@ void userMenu(User* currentUser) {
                 displayCompletedTasks(currentUser->completedTasks);
                 break;
             case 6: // completar tarefa
+                if (currentUser->pendingTasks == NULL) {
+                    printf("não tem tarefas pendentes a serem cumpridas!\n");
+                    break;
+                }
                 currentUser->completedTasks = completeTask(currentUser->pendingTasks, currentUser->completedTasks);
                 break;
             case 7: // busca binária pelo nome
@@ -195,7 +199,7 @@ void mainMenu(User* userList) {
 // main
 int main() {
     srand(time(NULL)); // geração da semente para randomização
-    User* userList = initializeUserList(); // inicialização da lsita de usuário
+    User* userList = initializeUserList(); // inicialização da lista de usuário
     mainMenu(userList); // chama o menu principal (agora é só ser feliz)
     return 0;
 }
