@@ -5,6 +5,7 @@
 
 // bubble
 void bubbleSort(DoublyTaskList* head);
+void bubbleSortChar(DoublyTaskList* head);
 
 // selection
 void selectionSort(DoublyTaskList* head);

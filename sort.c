@@ -32,6 +32,33 @@ void bubbleSort(DoublyTaskList* head) {
     } while (swapped);
 }
 
+// ordena a lista de tarefas alfabeticamente pelo nome usando Bubble Sort
+// recebe a cabeça da lista de tarefas (DoublyTaskList*)
+// não retorna valor
+void bubbleSortChar(DoublyTaskList* head) {
+    if (head == NULL) return;
+
+    int swapped;
+    DoublyTaskList* aux;
+    DoublyTaskList* nextNode;
+
+    do {
+        swapped = 0;
+        aux = head;
+
+        while (aux != NULL && aux->next != NULL) {
+            nextNode = aux->next;
+            if (strcmp(aux->task->name, nextNode->task->name) > 0) {
+                Task* temp = aux->task;
+                aux->task = nextNode->task;
+                nextNode->task = temp;
+                swapped = 1;
+            }
+            aux = aux->next;
+        }
+    } while (swapped);
+}
+
 // ordena a lista de tarefas usando o algoritmo selection sort
 // recebe a cabeça da lista de tarefas (DoublyTaskList*)
 // não retorna valor
@@ -84,46 +111,6 @@ DoublyTaskList* insertionSort(DoublyTaskList* head) {
             if (aux->next != NULL) {
                 aux->next->prev = aux->prev;
             }
-            aux->next = comparator;
-            aux->prev = comparator->prev;
-            if (comparator->prev != NULL) {
-                comparator->prev->next = aux;
-            }
-            comparator->prev = aux;
-
-            if (head == comparator) {
-                head = aux;
-            }
-        }
-
-        aux = aux->next;
-    }
-
-    return head;
-}
-
-// ordena pelo nome da tarefa (alfabeticamente)
-// recebe o ponteiro para a cabeça da lista de tarefas (DoublyTaskList*)
-// retorna o ponteiro para a nova cabeça da lista
-DoublyTaskList* insertionSortChar(DoublyTaskList* head) {
-    if (head == NULL || head->next == NULL) return head;
-
-    DoublyTaskList* aux = head->next;
-    while (aux != NULL) {
-        DoublyTaskList* comparator = head;
-
-        while (comparator != aux && strcmp(comparator->task->name, aux->task->name) <= 0) {
-            comparator = comparator->next;
-        }
-
-        if (comparator != aux) {
-            if (aux->prev != NULL) {
-                aux->prev->next = aux->next;
-            }
-            if (aux->next != NULL) {
-                aux->next->prev = aux->prev;
-            }
-
             aux->next = comparator;
             aux->prev = comparator->prev;
             if (comparator->prev != NULL) {

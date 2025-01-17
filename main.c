@@ -123,7 +123,7 @@ void userMenu(User* currentUser) {
                     printf("lista vazia! não há como buscar!\n");
                     break;
                 } 
-                currentUser->doublyTaskList = insertionSortChar(currentUser->doublyTaskList);
+                bubbleSortChar(currentUser->doublyTaskList);
                 printf("a lista duplamente encadeada foi ordenada por nome para permitir a busca binária!\n");
                 char name[50];
                 printf("digite o nome da tarefa: \n");
