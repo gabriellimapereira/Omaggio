@@ -188,6 +188,7 @@ void mainMenu(User* userList) {
                 int key;
                 printf("digite o id do usuário: ");
                 scanf("%d", &key);
+                while(getchar() != '\n');
                 userList = deleteUser(userList, key);
                 break;
             default:
